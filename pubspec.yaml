@@ -1,5 +1,5 @@
-name: bmi_app
-description: A new Flutter project.
+name: easy_bmi
+description: A simple and straightforward way to calculate body-mass-index (BMI).
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.

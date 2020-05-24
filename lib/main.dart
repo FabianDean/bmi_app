@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import './pages/HomePage.dart';
 import './pages/SettingsPage.dart';
+import './utils/globals.dart' as globals;
 
 void main() {
   LicenseRegistry.addLicense(() async* {
@@ -20,9 +21,9 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'BMI App',
+      title: globals.appName,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor: globals.mainColor,
         visualDensity: VisualDensity.adaptivePlatformDensity,
         textTheme: GoogleFonts.montserratTextTheme(textTheme).copyWith(
           headline6: GoogleFonts.montserrat(textStyle: textTheme.headline6),
@@ -43,7 +44,6 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage>
     with SingleTickerProviderStateMixin {
-  Color _mainColor = Color(0xff6c63ff);
   PageController _controller;
   int _index = 0;
   List<Widget> _widgetOptions = <Widget>[
@@ -51,7 +51,7 @@ class _MainPageState extends State<MainPage>
     SettingsPage(),
   ];
   List<String> _pageTitles = <String>[
-    "BMI App",
+    globals.appName,
     "Settings",
   ];
 
@@ -83,8 +83,11 @@ class _MainPageState extends State<MainPage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(_pageTitles[_index]),
-        backgroundColor: _mainColor,
+        title: Text(
+          _pageTitles[_index],
+          style: GoogleFonts.montserrat(),
+        ),
+        backgroundColor: globals.mainColor,
       ),
       body: GestureDetector(
         onTap: () {
@@ -109,7 +112,7 @@ class _MainPageState extends State<MainPage>
           ),
         ],
         currentIndex: _index,
-        selectedItemColor: _mainColor,
+        selectedItemColor: globals.mainColor,
         onTap: _onItemTapped,
       ),
     );

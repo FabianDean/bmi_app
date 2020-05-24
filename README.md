@@ -1,4 +1,4 @@
-# BMI App
+# Easy BMI
 
 A simple and straightforward way to calculate body-mass-index (BMI).
 

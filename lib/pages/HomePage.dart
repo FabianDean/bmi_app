@@ -32,7 +32,7 @@ class _HomePageState extends State<HomePage>
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      maintainBottomViewPadding: false,
+      bottom: true,
       minimum: EdgeInsets.all(20),
       child: LayoutBuilder(
         builder: (context, constraint) {
@@ -161,7 +161,10 @@ class _HomePageState extends State<HomePage>
                       },
                       onSelectedItemChanged: (value) {
                         setState(() {
-                          _age = value + 1;
+                          if (value == 0)
+                            _age = null; // picker on placeholder
+                          else
+                            _age = value + 1;
                         });
                       },
                     ),
@@ -203,6 +206,7 @@ class _HomePageState extends State<HomePage>
                                 fontSize: 22,
                               ),
                             ),
+                            cursorColor: globals.mainColor,
                             validator: (value) {
                               if (value.isEmpty) {
                                 return 'Please enter a number';
@@ -294,16 +298,6 @@ class _HomePageState extends State<HomePage>
                         textTheme: ButtonTextTheme.primary,
                         onPressed: () {
                           bool isAgeValid = _validateAge();
-                          // Validate returns true if the form is valid, otherwise false.
-                          if (isAgeValid &
-                              _heightKey.currentState.validate() &
-                              _weightKey.currentState.validate()) {
-                            // If the form is valid, display a snackbar. In the real world,
-                            // you'd often call a server or save the information in a database.
-
-                            Scaffold.of(context).showSnackBar(
-                                SnackBar(content: Text('It works!')));
-                          }
                           if (!isAgeValid) {
                             Scaffold.of(context).showSnackBar(
                               SnackBar(
@@ -311,6 +305,16 @@ class _HomePageState extends State<HomePage>
                                 backgroundColor: Colors.redAccent,
                               ),
                             );
+                          }
+                          // Validate returns true if the form is valid, otherwise false.
+                          if (isAgeValid &
+                              _heightKey.currentState.validate() &
+                              _weightKey.currentState.validate()) {
+                            // If the form is valid, display a snackbar. In the real world,
+                            // you'd often call a server or save the information in a database.
+                            print(_age.toString());
+                            Scaffold.of(context).showSnackBar(
+                                SnackBar(content: Text('It works!')));
                           }
                         },
                       ),
