@@ -1,6 +1,9 @@
+import 'package:auto_size_text/auto_size_text.dart';
+import 'package:easy_bmi/models/SystemModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import '../utils/globals.dart' as globals;
 
 class HomePage extends StatefulWidget {
@@ -180,53 +183,68 @@ class _HomePageState extends State<HomePage>
                     SizedBox(
                       height: 10,
                     ),
-                    Row(
-                      children: <Widget>[
-                        Expanded(
-                          flex: 2,
-                          child: TextFormField(
-                            key: _heightKey,
-                            controller: _heightController,
-                            keyboardType: TextInputType.number,
-                            textAlign: TextAlign.center,
-                            maxLength: 2,
-                            buildCounter: (BuildContext context,
-                                    {int currentLength,
-                                    int maxLength,
-                                    bool isFocused}) =>
-                                null,
-                            style: TextStyle(
-                              fontSize: 22,
-                              color: globals.mainColor,
-                            ),
-                            decoration: InputDecoration(
-                              hintText: "Enter height",
-                              hintStyle: TextStyle(
-                                color: Colors.black38,
-                                fontSize: 22,
+                    Consumer<SystemModel>(
+                      builder: (context, systemModel, child) {
+                        return Row(
+                          children: <Widget>[
+                            Expanded(
+                              flex: 1,
+                              child: TextFormField(
+                                key: _heightKey,
+                                controller: _heightController,
+                                keyboardType: TextInputType.number,
+                                textAlign: TextAlign.center,
+                                maxLength: systemModel.system == System.imperial
+                                    ? 2
+                                    : 3,
+                                buildCounter: (BuildContext context,
+                                        {int currentLength,
+                                        int maxLength,
+                                        bool isFocused}) =>
+                                    null,
+                                style: TextStyle(
+                                  fontSize: 22,
+                                  color: globals.mainColor,
+                                ),
+                                decoration: InputDecoration(
+                                  hintText: "Enter height",
+                                  hintStyle: TextStyle(
+                                    color: Colors.black38,
+                                    fontSize: 20,
+                                  ),
+                                ),
+                                cursorColor: globals.mainColor,
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return 'Please enter a number';
+                                  }
+                                  int height = int.parse(value);
+                                  if (systemModel.system == System.imperial &&
+                                          height < 20 ||
+                                      height > 90) {
+                                    return 'Number must be between 20 and 90';
+                                  }
+                                  if (systemModel.system == System.metric &&
+                                          height < 50 ||
+                                      height > 229) {
+                                    return 'Number must be between 50 and 229';
+                                  }
+                                  return null;
+                                },
                               ),
                             ),
-                            cursorColor: globals.mainColor,
-                            validator: (value) {
-                              if (value.isEmpty) {
-                                return 'Please enter a number';
-                              }
-                              int height = int.parse(value);
-                              if (height < 20 || height > 90) {
-                                return 'Number must be between 20 and 90';
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: Text(
-                            " inches",
-                            textScaleFactor: 1.5,
-                          ),
-                        ),
-                      ],
+                            Expanded(
+                              flex: 1,
+                              child: Text(
+                                systemModel.system == System.imperial
+                                    ? " inches (in)"
+                                    : " centimeters (cm)",
+                                textScaleFactor: 1.3,
+                              ),
+                            ),
+                          ],
+                        );
+                      },
                     ),
                     Spacer(),
                     Text(
@@ -240,53 +258,66 @@ class _HomePageState extends State<HomePage>
                     SizedBox(
                       height: 10,
                     ),
-                    Row(
-                      children: <Widget>[
-                        Expanded(
-                          flex: 2,
-                          child: TextFormField(
-                            key: _weightKey,
-                            controller: _weightController,
-                            keyboardType: TextInputType.number,
-                            textAlign: TextAlign.center,
-                            maxLength: 3,
-                            buildCounter: (BuildContext context,
-                                    {int currentLength,
-                                    int maxLength,
-                                    bool isFocused}) =>
-                                null,
-                            style: TextStyle(
-                              fontSize: 22,
-                              color: globals.mainColor,
-                            ),
-                            decoration: InputDecoration(
-                              hintText: "Enter weight",
-                              hintStyle: TextStyle(
-                                color: Colors.black38,
-                                fontSize: 22,
+                    Consumer<SystemModel>(
+                      builder: (context, systemModel, child) {
+                        return Row(
+                          children: <Widget>[
+                            Expanded(
+                              flex: 1,
+                              child: TextFormField(
+                                key: _weightKey,
+                                controller: _weightController,
+                                keyboardType: TextInputType.number,
+                                textAlign: TextAlign.center,
+                                maxLength: 3,
+                                buildCounter: (BuildContext context,
+                                        {int currentLength,
+                                        int maxLength,
+                                        bool isFocused}) =>
+                                    null,
+                                style: TextStyle(
+                                  fontSize: 22,
+                                  color: globals.mainColor,
+                                ),
+                                decoration: InputDecoration(
+                                  hintText: "Enter weight",
+                                  hintStyle: TextStyle(
+                                    color: Colors.black38,
+                                    fontSize: 20,
+                                  ),
+                                ),
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return 'Please enter a number';
+                                  }
+                                  int weight = int.parse(value);
+                                  if (systemModel.system == System.imperial &&
+                                          weight < 10 ||
+                                      weight > 400) {
+                                    return 'Number must be between 10 and 400';
+                                  }
+                                  if (systemModel.system == System.metric &&
+                                          weight < 1 ||
+                                      weight > 182) {
+                                    return 'Number must be between 4 and 182';
+                                  }
+                                  return null;
+                                },
                               ),
                             ),
-                            validator: (value) {
-                              if (value.isEmpty) {
-                                return 'Please enter a number';
-                              }
-                              int weight = int.parse(value);
-                              if (weight < 1 || weight > 400) {
-                                return 'Number must be between 1 and 400';
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: Text(
-                            " pounds",
-                            textScaleFactor: 1.5,
-                            maxLines: 1,
-                          ),
-                        ),
-                      ],
+                            Expanded(
+                              flex: 1,
+                              child: Text(
+                                systemModel.system == System.imperial
+                                    ? " pounds (lbs)"
+                                    : " kilograms (kg)",
+                                textScaleFactor: 1.3,
+                                maxLines: 1,
+                              ),
+                            ),
+                          ],
+                        );
+                      },
                     ),
                     Spacer(),
                     Center(

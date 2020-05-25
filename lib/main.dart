@@ -2,8 +2,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import './pages/HomePage.dart';
 import './pages/SettingsPage.dart';
+import './models/SystemModel.dart';
 import './utils/globals.dart' as globals;
 
 void main() {
@@ -19,18 +21,21 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
 
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: globals.appName,
-      theme: ThemeData(
-        primaryColor: globals.mainColor,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-        textTheme: GoogleFonts.montserratTextTheme(textTheme).copyWith(
-          headline6: GoogleFonts.montserrat(textStyle: textTheme.headline6),
-          bodyText2: GoogleFonts.montserrat(textStyle: textTheme.bodyText2),
+    return ChangeNotifierProvider<SystemModel>(
+      create: (context) => SystemModel(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: globals.appName,
+        theme: ThemeData(
+          primaryColor: globals.mainColor,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+          textTheme: GoogleFonts.montserratTextTheme(textTheme).copyWith(
+            headline6: GoogleFonts.montserrat(textStyle: textTheme.headline6),
+            bodyText2: GoogleFonts.montserrat(textStyle: textTheme.bodyText2),
+          ),
         ),
+        home: MainPage(),
       ),
-      home: MainPage(),
     );
   }
 }
