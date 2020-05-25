@@ -71,7 +71,7 @@ class _HomePageState extends State<HomePage>
                       height: 45,
                     ),
                     Text(
-                      "Gender",
+                      "Sex",
                       style: TextStyle(
                         color: globals.mainColor,
                         fontWeight: FontWeight.bold,

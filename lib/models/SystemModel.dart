@@ -10,7 +10,11 @@ class SystemModel with ChangeNotifier {
       system = System.metric;
     else
       system = System.imperial;
-    print("New system index " + system.index.toString());
+    notifyListeners();
+  }
+
+  void changeToSystem(System sys) {
+    system = sys;
     notifyListeners();
   }
 }
