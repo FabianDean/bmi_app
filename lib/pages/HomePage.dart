@@ -1,7 +1,7 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_bmi/models/SystemModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../utils/globals.dart' as globals;
@@ -47,33 +47,46 @@ class _HomePageState extends State<HomePage>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
+                            SizedBox(
+                              height: 10,
+                            ),
                             Text(
                               "Calculate",
                               textScaleFactor: 2.5,
                               style: TextStyle(
-                                fontWeight: FontWeight.w800,
+                                color:
+                                    Theme.of(context).textTheme.headline5.color,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                             SizedBox(height: 5),
                             Text(
                               "BMI",
                               textScaleFactor: 2.0,
+                              style: TextStyle(
+                                color:
+                                    Theme.of(context).textTheme.headline6.color,
+                              ),
                             ),
                           ],
                         ),
+                        Spacer(),
+                        SvgPicture.asset(
+                          Theme.of(context).brightness == Brightness.light
+                              ? 'assets/images/light_homeArt.svg'
+                              : 'assets/images/dark_homeArt.svg',
+                        ),
                       ],
                     ),
-                    SizedBox(
-                      height: 45,
-                    ),
                     Text(
-                      "Sex",
+                      "Gender",
                       style: TextStyle(
-                        color: globals.mainColor,
+                        color: Theme.of(context).accentColor,
                         fontWeight: FontWeight.bold,
                       ),
                       textScaleFactor: 1.5,
@@ -100,6 +113,8 @@ class _HomePageState extends State<HomePage>
                       selectedColor: globals.mainColor,
                       disabledColor: Colors.black26,
                       fillColor: globals.mainColor.withOpacity(0.1),
+                      borderColor: Theme.of(context).dividerColor,
+                      selectedBorderColor: Theme.of(context).dividerColor,
                       onPressed: (int index) {
                         setState(() {
                           for (int buttonIndex = 0;
@@ -118,7 +133,7 @@ class _HomePageState extends State<HomePage>
                     Text(
                       "Age",
                       style: TextStyle(
-                        color: globals.mainColor,
+                        color: Theme.of(context).accentColor,
                         fontWeight: FontWeight.bold,
                       ),
                       textScaleFactor: 1.5,
@@ -135,8 +150,11 @@ class _HomePageState extends State<HomePage>
                           return Center(
                             child: Text(
                               "–– Scroll to select age ––",
-                              style:
-                                  GoogleFonts.montserrat(color: Colors.black38),
+                              style: GoogleFonts.montserrat(
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .caption
+                                      .color),
                             ),
                           );
                         return Center(
@@ -153,7 +171,11 @@ class _HomePageState extends State<HomePage>
                                 TextSpan(
                                   text: (" years old"),
                                   style: GoogleFonts.montserrat(
-                                    color: Colors.black54,
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .headline6
+                                        .color
+                                        .withOpacity(0.9),
                                     fontSize: 22,
                                   ),
                                 ),
@@ -175,7 +197,7 @@ class _HomePageState extends State<HomePage>
                     Text(
                       "Height",
                       style: TextStyle(
-                        color: globals.mainColor,
+                        color: Theme.of(context).accentColor,
                         fontWeight: FontWeight.bold,
                       ),
                       textScaleFactor: 1.5,
@@ -209,7 +231,10 @@ class _HomePageState extends State<HomePage>
                                 decoration: InputDecoration(
                                   hintText: "Enter height",
                                   hintStyle: TextStyle(
-                                    color: Colors.black38,
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .caption
+                                        .color,
                                     fontSize: 20,
                                   ),
                                 ),
@@ -240,6 +265,12 @@ class _HomePageState extends State<HomePage>
                                     ? " inches (in)"
                                     : " centimeters (cm)",
                                 textScaleFactor: 1.3,
+                                maxLines: 1,
+                                style: TextStyle(
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .headline5
+                                        .color),
                               ),
                             ),
                           ],
@@ -250,7 +281,7 @@ class _HomePageState extends State<HomePage>
                     Text(
                       "Weight",
                       style: TextStyle(
-                        color: globals.mainColor,
+                        color: Theme.of(context).accentColor,
                         fontWeight: FontWeight.bold,
                       ),
                       textScaleFactor: 1.5,
@@ -282,7 +313,10 @@ class _HomePageState extends State<HomePage>
                                 decoration: InputDecoration(
                                   hintText: "Enter weight",
                                   hintStyle: TextStyle(
-                                    color: Colors.black38,
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .caption
+                                        .color,
                                     fontSize: 20,
                                   ),
                                 ),
@@ -313,6 +347,11 @@ class _HomePageState extends State<HomePage>
                                     : " kilograms (kg)",
                                 textScaleFactor: 1.3,
                                 maxLines: 1,
+                                style: TextStyle(
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .headline5
+                                        .color),
                               ),
                             ),
                           ],
@@ -332,7 +371,15 @@ class _HomePageState extends State<HomePage>
                           if (!isAgeValid) {
                             Scaffold.of(context).showSnackBar(
                               SnackBar(
-                                content: Text('Select valid age'),
+                                content: Text(
+                                  'Select valid age',
+                                  style: TextStyle(
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .headline5
+                                        .color,
+                                  ),
+                                ),
                                 backgroundColor: Colors.redAccent,
                               ),
                             );

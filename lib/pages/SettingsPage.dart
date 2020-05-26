@@ -35,6 +35,7 @@ class _SettingsPageState extends State<SettingsPage>
               "General",
               textScaleFactor: 1.1,
               style: TextStyle(
+                color: Theme.of(context).textTheme.headline6.color,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -63,6 +64,8 @@ class _SettingsPageState extends State<SettingsPage>
               selectedColor: globals.mainColor,
               disabledColor: Colors.black26,
               fillColor: globals.mainColor.withOpacity(0.1),
+              borderColor: Theme.of(context).dividerColor,
+              selectedBorderColor: Theme.of(context).dividerColor,
               onPressed: (int index) {
                 setState(() {
                   for (int buttonIndex = 0;
@@ -93,7 +96,7 @@ class _SettingsPageState extends State<SettingsPage>
                 children: <Widget>[
                   Icon(
                     Icons.history,
-                    color: Colors.black87,
+                    color: Theme.of(context).iconTheme.color,
                   ),
                   SizedBox(
                     width: 10,
@@ -105,7 +108,7 @@ class _SettingsPageState extends State<SettingsPage>
                 ],
               ),
             ),
-            onPressed: systemModel.changeSystem,
+            onPressed: () {},
           ),
         ],
       ),
