@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import './pages/HomePage.dart';
 import './pages/SettingsPage.dart';
+import './pages/HistoryPage.dart';
 import './models/SystemModel.dart';
 import './utils/globals.dart' as globals;
 
@@ -13,7 +14,11 @@ void main() {
     final license = await rootBundle.loadString('google_fonts/OFL.txt');
     yield LicenseEntryWithLineBreaks(['google_fonts'], license);
   });
-  runApp(MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+      .then((_) {
+    runApp(MyApp());
+  });
 }
 
 class MyApp extends StatelessWidget {
@@ -59,6 +64,11 @@ class MyApp extends StatelessWidget {
           textSelectionHandleColor: Colors.grey[200],
         ),
         home: MainPage(),
+        routes: {
+          "/home": (_) => HomePage(),
+          "/settings": (_) => SettingsPage(),
+          "/history": (_) => HistoryPage(),
+        },
       ),
     );
   }
@@ -71,8 +81,7 @@ class MainPage extends StatefulWidget {
   _MainPageState createState() => _MainPageState();
 }
 
-class _MainPageState extends State<MainPage>
-    with SingleTickerProviderStateMixin {
+class _MainPageState extends State<MainPage> {
   PageController _controller;
   int _index = 0;
   List<Widget> _widgetOptions = <Widget>[

@@ -1,9 +1,10 @@
-import 'package:easy_bmi/models/SystemModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:easy_bmi/models/SystemModel.dart';
 import '../utils/globals.dart' as globals;
 
 class HomePage extends StatefulWidget {
@@ -19,13 +20,35 @@ class _HomePageState extends State<HomePage>
   final _heightKey = GlobalKey<FormFieldState>();
   TextEditingController _heightController = TextEditingController();
   int _age;
+  SharedPreferences _prefs;
 
   @override
   bool get wantKeepAlive => true;
 
   @override
   void initState() {
+    _getPrefs();
     super.initState();
+  }
+
+  Future<void> _getPrefs() async {
+    _prefs = await SharedPreferences.getInstance();
+  }
+
+  Future<void> _saveData() async {
+    await _prefs.setStringList(DateTime.now().toString() + "_bmi", [
+      _isSelected[0] == true ? "Male" : "Female",
+      _age.toString(),
+      _heightKey.currentState.value.toString(),
+      _weightKey.currentState.value.toString()
+    ]);
+
+    print([
+      _isSelected[0] == true ? "Male" : "Female",
+      _age.toString(),
+      _heightKey.currentState.value.toString(),
+      _weightKey.currentState.value.toString()
+    ]);
   }
 
   bool _validateAge() {
@@ -34,6 +57,7 @@ class _HomePageState extends State<HomePage>
 
   @override
   Widget build(BuildContext context) {
+    print(MediaQuery.of(context).size.height);
     return SafeArea(
       bottom: true,
       minimum: EdgeInsets.all(20),
@@ -53,7 +77,9 @@ class _HomePageState extends State<HomePage>
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             SizedBox(
-                              height: 10,
+                              height: MediaQuery.of(context).size.height < 700
+                                  ? 0
+                                  : 10,
                             ),
                             Text(
                               "Calculate",
@@ -80,6 +106,9 @@ class _HomePageState extends State<HomePage>
                           Theme.of(context).brightness == Brightness.light
                               ? 'assets/images/light_homeArt.svg'
                               : 'assets/images/dark_homeArt.svg',
+                          height: MediaQuery.of(context).size.height < 700
+                              ? 100
+                              : null,
                         ),
                       ],
                     ),
@@ -92,7 +121,7 @@ class _HomePageState extends State<HomePage>
                       textScaleFactor: 1.5,
                     ),
                     SizedBox(
-                      height: 10,
+                      height: MediaQuery.of(context).size.height < 700 ? 5 : 10,
                     ),
                     ToggleButtons(
                       isSelected: _isSelected,
@@ -139,7 +168,7 @@ class _HomePageState extends State<HomePage>
                       textScaleFactor: 1.5,
                     ),
                     SizedBox(
-                      height: 10,
+                      height: MediaQuery.of(context).size.height < 700 ? 5 : 10,
                     ),
                     CupertinoPicker.builder(
                       backgroundColor: globals.mainColor.withOpacity(0.02),
@@ -203,7 +232,7 @@ class _HomePageState extends State<HomePage>
                       textScaleFactor: 1.5,
                     ),
                     SizedBox(
-                      height: 10,
+                      height: MediaQuery.of(context).size.height < 700 ? 0 : 10,
                     ),
                     Consumer<SystemModel>(
                       builder: (context, systemModel, child) {
@@ -287,7 +316,7 @@ class _HomePageState extends State<HomePage>
                       textScaleFactor: 1.5,
                     ),
                     SizedBox(
-                      height: 10,
+                      height: MediaQuery.of(context).size.height < 700 ? 0 : 10,
                     ),
                     Consumer<SystemModel>(
                       builder: (context, systemModel, child) {
@@ -366,7 +395,7 @@ class _HomePageState extends State<HomePage>
                         child: Text("CALCULATE"),
                         color: globals.mainColor,
                         textTheme: ButtonTextTheme.primary,
-                        onPressed: () {
+                        onPressed: () async {
                           bool isAgeValid = _validateAge();
                           if (!isAgeValid) {
                             Scaffold.of(context).showSnackBar(
@@ -374,10 +403,7 @@ class _HomePageState extends State<HomePage>
                                 content: Text(
                                   'Select valid age',
                                   style: TextStyle(
-                                    color: Theme.of(context)
-                                        .textTheme
-                                        .headline5
-                                        .color,
+                                    color: Colors.white,
                                   ),
                                 ),
                                 backgroundColor: Colors.redAccent,
@@ -390,9 +416,9 @@ class _HomePageState extends State<HomePage>
                               _weightKey.currentState.validate()) {
                             // If the form is valid, display a snackbar. In the real world,
                             // you'd often call a server or save the information in a database.
-                            print(_age.toString());
                             Scaffold.of(context).showSnackBar(
                                 SnackBar(content: Text('It works!')));
+                            await _saveData();
                           }
                         },
                       ),

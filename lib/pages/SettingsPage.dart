@@ -108,7 +108,9 @@ class _SettingsPageState extends State<SettingsPage>
                 ],
               ),
             ),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).pushNamed("/history");
+            },
           ),
         ],
       ),
