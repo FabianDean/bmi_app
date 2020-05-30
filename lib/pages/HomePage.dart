@@ -1,3 +1,4 @@
+import 'package:easy_bmi/models/UserInputModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -51,16 +52,24 @@ class _HomePageState extends State<HomePage>
     ]);
   }
 
+  void _updateInputModel() {
+    final inputModel = Provider.of<UserInputModel>(context, listen: false);
+    inputModel.changeInput([
+      _isSelected[0] == true ? "Male" : "Female",
+      _age.toString(),
+      _heightKey.currentState.value.toString(),
+      _weightKey.currentState.value.toString()
+    ]);
+  }
+
   bool _validateAge() {
     return _age != null && _age > 0 && _age < 111;
   }
 
   @override
   Widget build(BuildContext context) {
-    print(MediaQuery.of(context).size.height);
     return SafeArea(
-      bottom: true,
-      minimum: EdgeInsets.all(20),
+      minimum: EdgeInsets.only(top: 20, left: 20, right: 20, bottom: 10),
       child: LayoutBuilder(
         builder: (context, constraint) {
           return SingleChildScrollView(
@@ -414,11 +423,9 @@ class _HomePageState extends State<HomePage>
                           if (isAgeValid &
                               _heightKey.currentState.validate() &
                               _weightKey.currentState.validate()) {
-                            // If the form is valid, display a snackbar. In the real world,
-                            // you'd often call a server or save the information in a database.
-                            Scaffold.of(context).showSnackBar(
-                                SnackBar(content: Text('It works!')));
                             await _saveData();
+                            _updateInputModel();
+                            Navigator.of(context).pushNamed("/results");
                           }
                         },
                       ),

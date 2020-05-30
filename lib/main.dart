@@ -1,3 +1,5 @@
+import 'package:easy_bmi/models/UserInputModel.dart';
+import 'package:easy_bmi/pages/ResultsPage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -26,8 +28,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
 
-    return ChangeNotifierProvider<SystemModel>(
-      create: (context) => SystemModel(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<SystemModel>(
+          create: (context) => SystemModel(),
+        ),
+        ChangeNotifierProvider<UserInputModel>(
+          create: (context) => UserInputModel(),
+        ),
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: globals.appName,
@@ -66,6 +75,7 @@ class MyApp extends StatelessWidget {
         home: MainPage(),
         routes: {
           "/home": (_) => HomePage(),
+          "/results": (_) => ResultsPage(),
           "/settings": (_) => SettingsPage(),
           "/history": (_) => HistoryPage(),
         },
