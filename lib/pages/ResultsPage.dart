@@ -2,6 +2,7 @@ import 'package:easy_bmi/models/UserInputModel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../utils/globals.dart' as globals;
 
 class ResultsPage extends StatefulWidget {
   @override
@@ -41,6 +42,7 @@ class _ResultsPageState extends State<ResultsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: globals.mainColor,
         title: Text(
           "Results",
           style: GoogleFonts.montserrat(),

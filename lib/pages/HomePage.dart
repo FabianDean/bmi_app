@@ -37,28 +37,26 @@ class _HomePageState extends State<HomePage>
   }
 
   Future<void> _saveData() async {
+    final systemModel = Provider.of<SystemModel>(context, listen: false);
+
     await _prefs.setStringList(DateTime.now().toString() + "_bmi", [
       _isSelected[0] == true ? "Male" : "Female",
       _age.toString(),
       _heightKey.currentState.value.toString(),
-      _weightKey.currentState.value.toString()
-    ]);
-
-    print([
-      _isSelected[0] == true ? "Male" : "Female",
-      _age.toString(),
-      _heightKey.currentState.value.toString(),
-      _weightKey.currentState.value.toString()
+      _weightKey.currentState.value.toString(),
+      systemModel.system == System.imperial ? "Imperial" : "Metric",
     ]);
   }
 
   void _updateInputModel() {
     final inputModel = Provider.of<UserInputModel>(context, listen: false);
+    final systemModel = Provider.of<SystemModel>(context, listen: false);
     inputModel.changeInput([
       _isSelected[0] == true ? "Male" : "Female",
       _age.toString(),
       _heightKey.currentState.value.toString(),
-      _weightKey.currentState.value.toString()
+      _weightKey.currentState.value.toString(),
+      systemModel.system == System.imperial ? "Imperial" : "Metric",
     ]);
   }
 
