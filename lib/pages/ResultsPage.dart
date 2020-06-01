@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../utils/globals.dart' as globals;
+import '../utils/formulas.dart' as formulas;
 
 class ResultsPage extends StatefulWidget {
   @override
@@ -38,6 +39,22 @@ Widget _resultsSection(BuildContext context) {
 }
 
 class _ResultsPageState extends State<ResultsPage> {
+  double _bmi;
+
+  @override
+  void initState() {
+    final inputModel = Provider.of<UserInputModel>(context, listen: false);
+    if (inputModel.input != null) {
+      setState(() {
+        _bmi = formulas.calculateBMI(
+            double.parse(inputModel.input.elementAt(2)), // height
+            double.parse(inputModel.input.elementAt(3)), // weight
+            inputModel.input.elementAt(4)); // system of measurement
+      });
+    }
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,7 +68,20 @@ class _ResultsPageState extends State<ResultsPage> {
       body: SafeArea(
         child: LayoutBuilder(
           builder: (context, constraint) {
-            return _resultsSection(context);
+            return Column(
+              children: <Widget>[
+                _resultsSection(context),
+                _bmi != null
+                    ? Text(
+                        "BMI: " + _bmi.toString(),
+                        style: Theme.of(context).textTheme.headline5,
+                      )
+                    : SizedBox(
+                        height: 0,
+                        width: 0,
+                      ),
+              ],
+            );
           },
         ),
       ),

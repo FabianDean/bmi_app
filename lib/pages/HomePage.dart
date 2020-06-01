@@ -281,13 +281,11 @@ class _HomePageState extends State<HomePage>
                                   }
                                   int height = int.parse(value);
                                   if (systemModel.system == System.imperial &&
-                                          height < 20 ||
-                                      height > 90) {
+                                      (height < 20 || height > 90)) {
                                     return 'Number must be between 20 and 90';
                                   }
                                   if (systemModel.system == System.metric &&
-                                          height < 50 ||
-                                      height > 229) {
+                                      (height < 50 || height > 229)) {
                                     return 'Number must be between 50 and 229';
                                   }
                                   return null;
@@ -362,13 +360,11 @@ class _HomePageState extends State<HomePage>
                                   }
                                   int weight = int.parse(value);
                                   if (systemModel.system == System.imperial &&
-                                          weight < 10 ||
-                                      weight > 400) {
+                                      (weight < 10 || weight > 400)) {
                                     return 'Number must be between 10 and 400';
                                   }
                                   if (systemModel.system == System.metric &&
-                                          weight < 1 ||
-                                      weight > 182) {
+                                      (weight < 1 || weight > 182)) {
                                     return 'Number must be between 4 and 182';
                                   }
                                   return null;
