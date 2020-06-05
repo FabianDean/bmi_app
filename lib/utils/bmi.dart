@@ -1,6 +1,8 @@
 import 'dart:math' as Math;
 
-/** 
+enum Category { underweight, healthy, overweight, obese }
+
+/*
  * Calculates BMI using the system of measurement provided.
  * Units of BMI are in kg/m^2 regardless of the system chosen.
  * Formulas from https://www.calculator.net/bmi-calculator.html 
@@ -15,4 +17,10 @@ double calculateBMI(double height, double weight, String system) {
   }
   bmi = double.parse(bmi.toStringAsPrecision(2));
   return bmi;
+}
+
+class Result {
+  double bmi;
+  String summary;
+  Category category;
 }

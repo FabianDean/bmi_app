@@ -6,7 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:easy_bmi/models/SystemModel.dart';
-import '../utils/globals.dart' as globals;
+import '../utils/globals.dart' as Globals;
 
 class HomePage extends StatefulWidget {
   @override
@@ -146,9 +146,9 @@ class _HomePageState extends State<HomePage>
                           style: TextStyle(fontSize: 16),
                         ),
                       ],
-                      selectedColor: globals.mainColor,
+                      selectedColor: Globals.mainColor,
                       disabledColor: Colors.black26,
-                      fillColor: globals.mainColor.withOpacity(0.1),
+                      fillColor: Globals.mainColor.withOpacity(0.1),
                       borderColor: Theme.of(context).dividerColor,
                       selectedBorderColor: Theme.of(context).dividerColor,
                       onPressed: (int index) {
@@ -178,7 +178,7 @@ class _HomePageState extends State<HomePage>
                       height: MediaQuery.of(context).size.height < 700 ? 5 : 10,
                     ),
                     CupertinoPicker.builder(
-                      backgroundColor: globals.mainColor.withOpacity(0.02),
+                      backgroundColor: Globals.mainColor.withOpacity(0.02),
                       itemExtent: 50,
                       childCount: 110,
                       itemBuilder: (context, index) {
@@ -200,7 +200,7 @@ class _HomePageState extends State<HomePage>
                                 TextSpan(
                                   text: (index + 1).toString(),
                                   style: GoogleFonts.montserrat(
-                                    color: globals.mainColor,
+                                    color: Globals.mainColor,
                                     fontSize: 22,
                                   ),
                                 ),
@@ -262,7 +262,7 @@ class _HomePageState extends State<HomePage>
                                     null,
                                 style: TextStyle(
                                   fontSize: 22,
-                                  color: globals.mainColor,
+                                  color: Globals.mainColor,
                                 ),
                                 decoration: InputDecoration(
                                   hintText: "Enter height",
@@ -274,7 +274,7 @@ class _HomePageState extends State<HomePage>
                                     fontSize: 20,
                                   ),
                                 ),
-                                cursorColor: globals.mainColor,
+                                cursorColor: Globals.mainColor,
                                 validator: (value) {
                                   if (value.isEmpty) {
                                     return 'Please enter a number';
@@ -342,7 +342,7 @@ class _HomePageState extends State<HomePage>
                                     null,
                                 style: TextStyle(
                                   fontSize: 22,
-                                  color: globals.mainColor,
+                                  color: Globals.mainColor,
                                 ),
                                 decoration: InputDecoration(
                                   hintText: "Enter weight",
@@ -396,7 +396,7 @@ class _HomePageState extends State<HomePage>
                         height: 50,
                         minWidth: MediaQuery.of(context).size.width,
                         child: Text("CALCULATE"),
-                        color: globals.mainColor,
+                        color: Globals.mainColor,
                         textTheme: ButtonTextTheme.primary,
                         onPressed: () async {
                           bool isAgeValid = _validateAge();

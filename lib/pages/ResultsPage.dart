@@ -2,8 +2,8 @@ import 'package:easy_bmi/models/UserInputModel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../utils/globals.dart' as globals;
-import '../utils/formulas.dart' as formulas;
+import '../utils/globals.dart' as Globals;
+import '../utils/bmi.dart' as BMI;
 
 class ResultsPage extends StatefulWidget {
   @override
@@ -46,7 +46,7 @@ class _ResultsPageState extends State<ResultsPage> {
     final inputModel = Provider.of<UserInputModel>(context, listen: false);
     if (inputModel.input != null) {
       setState(() {
-        _bmi = formulas.calculateBMI(
+        _bmi = BMI.calculateBMI(
             double.parse(inputModel.input.elementAt(2)), // height
             double.parse(inputModel.input.elementAt(3)), // weight
             inputModel.input.elementAt(4)); // system of measurement
@@ -59,7 +59,7 @@ class _ResultsPageState extends State<ResultsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: globals.mainColor,
+        backgroundColor: Globals.mainColor,
         title: Text(
           "Results",
           style: GoogleFonts.montserrat(),

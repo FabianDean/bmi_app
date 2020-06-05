@@ -9,7 +9,7 @@ import './pages/HomePage.dart';
 import './pages/SettingsPage.dart';
 import './pages/HistoryPage.dart';
 import './models/SystemModel.dart';
-import './utils/globals.dart' as globals;
+import './utils/globals.dart' as Globals;
 
 void main() {
   LicenseRegistry.addLicense(() async* {
@@ -39,11 +39,11 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: globals.appName,
+        title: Globals.appName,
         theme: ThemeData(
           brightness: Brightness.light,
-          primaryColor: globals.mainColor,
-          accentColor: globals.mainColor.withOpacity(0.9),
+          primaryColor: Globals.mainColor,
+          accentColor: Globals.mainColor.withOpacity(0.9),
           visualDensity: VisualDensity.adaptivePlatformDensity,
           textTheme: GoogleFonts.montserratTextTheme(textTheme).copyWith(
             headline5: TextStyle(color: Colors.black),
@@ -99,7 +99,7 @@ class _MainPageState extends State<MainPage> {
     SettingsPage(),
   ];
   List<String> _pageTitles = <String>[
-    globals.appName,
+    Globals.appName,
     "Settings",
   ];
   @override
@@ -134,7 +134,7 @@ class _MainPageState extends State<MainPage> {
           _pageTitles[_index],
           style: GoogleFonts.montserrat(),
         ),
-        backgroundColor: globals.mainColor,
+        backgroundColor: Globals.mainColor,
       ),
       body: GestureDetector(
         onTap: () {
@@ -168,7 +168,7 @@ class _MainPageState extends State<MainPage> {
             ),
           ],
           currentIndex: _index,
-          selectedItemColor: globals.mainColor,
+          selectedItemColor: Globals.mainColor,
           onTap: _onItemTapped,
         ),
       ),

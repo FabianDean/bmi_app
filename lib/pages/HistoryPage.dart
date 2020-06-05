@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../utils/globals.dart' as globals;
+import '../utils/HistoryResultCard.dart';
+import '../utils/globals.dart' as Globals;
 
 class HistoryPage extends StatefulWidget {
   @override
@@ -44,7 +45,7 @@ class _HistoryPageState extends State<HistoryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: globals.mainColor,
+        backgroundColor: Globals.mainColor,
         title: Text(
           "History",
           style: GoogleFonts.montserrat(),
@@ -70,15 +71,10 @@ class _HistoryPageState extends State<HistoryPage> {
         child: _keys != null && _keys.length > 0
             ? ListView.builder(
                 itemCount: _keys.length,
-                itemExtent: 60,
                 itemBuilder: (context, index) {
                   return MaterialButton(
-                    child: ListTile(
-                      title: Text(
-                        _prefs.getStringList(_keys.elementAt(index)).toString(),
-                        style: Theme.of(context).textTheme.headline6,
-                      ),
-                    ),
+                    child: HistoryResultCard(
+                        _prefs.getStringList(_keys.elementAt(index))),
                     onPressed: () {
                       _viewResults(context, index);
                     },

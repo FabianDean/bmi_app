@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:easy_bmi/models/SystemModel.dart';
 import 'package:provider/provider.dart';
-import '../utils/globals.dart' as globals;
+import '../utils/globals.dart' as Globals;
 
 class SettingsPage extends StatefulWidget {
   @override
@@ -61,9 +61,9 @@ class _SettingsPageState extends State<SettingsPage>
                   style: TextStyle(fontSize: 16),
                 ),
               ],
-              selectedColor: globals.mainColor,
+              selectedColor: Globals.mainColor,
               disabledColor: Colors.black26,
-              fillColor: globals.mainColor.withOpacity(0.1),
+              fillColor: Globals.mainColor.withOpacity(0.1),
               borderColor: Theme.of(context).dividerColor,
               selectedBorderColor: Theme.of(context).dividerColor,
               onPressed: (int index) {
