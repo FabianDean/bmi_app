@@ -1,6 +1,5 @@
 import 'dart:math' as Math;
-
-enum Category { underweight, healthy, overweight, obese }
+import 'Result.dart';
 
 /*
  * Calculates BMI using the system of measurement provided.
@@ -8,7 +7,7 @@ enum Category { underweight, healthy, overweight, obese }
  * Formulas from https://www.calculator.net/bmi-calculator.html 
  * @returns BMI
  */
-double calculateBMI(double height, double weight, String system) {
+double _calculateBMI(double height, double weight, String system) {
   double bmi;
   if (system == "Imperial") {
     bmi = 703 * (weight / Math.pow(height, 2));
@@ -19,8 +18,23 @@ double calculateBMI(double height, double weight, String system) {
   return bmi;
 }
 
-class Result {
-  double bmi;
+Result getResult(double height, double weight, String system) {
+  double bmi = _calculateBMI(height, weight, system);
   String summary;
   Category category;
+
+  if (bmi < 18.5) {
+    category = Category.underweight;
+    summary = "You are considered underweight and possibly malnourished.";
+  } else if (bmi >= 18.5 && bmi <= 24.9) {
+    category = Category.healthy;
+    summary = "You are within a healthy weight range.";
+  } else if (bmi >= 25 && bmi <= 29.9) {
+    category = Category.overweight;
+    summary = "You are considered overweight.";
+  } else {
+    category = Category.obese;
+    summary = "You are considered obese.";
+  }
+  return Result(bmi, summary, category);
 }

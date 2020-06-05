@@ -73,6 +73,7 @@ class _HistoryPageState extends State<HistoryPage> {
                 itemCount: _keys.length,
                 itemBuilder: (context, index) {
                   return MaterialButton(
+                    padding: EdgeInsets.all(0),
                     child: HistoryResultCard(
                         _prefs.getStringList(_keys.elementAt(index))),
                     onPressed: () {

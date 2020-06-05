@@ -46,10 +46,12 @@ class _ResultsPageState extends State<ResultsPage> {
     final inputModel = Provider.of<UserInputModel>(context, listen: false);
     if (inputModel.input != null) {
       setState(() {
-        _bmi = BMI.calculateBMI(
-            double.parse(inputModel.input.elementAt(2)), // height
-            double.parse(inputModel.input.elementAt(3)), // weight
-            inputModel.input.elementAt(4)); // system of measurement
+        _bmi = BMI
+            .getResult(
+                double.parse(inputModel.input.elementAt(2)), // height
+                double.parse(inputModel.input.elementAt(3)), // weight
+                inputModel.input.elementAt(4))
+            .bmi; // system of measurement
       });
     }
     super.initState();
