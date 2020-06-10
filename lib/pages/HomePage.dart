@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:easy_bmi/models/SystemModel.dart';
+import '../widgets/SectionTitle.dart';
 import '../utils/globals.dart' as Globals;
 
 class HomePage extends StatefulWidget {
@@ -119,14 +120,7 @@ class _HomePageState extends State<HomePage>
                         ),
                       ],
                     ),
-                    Text(
-                      "Gender",
-                      style: TextStyle(
-                        color: Theme.of(context).accentColor,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textScaleFactor: 1.5,
-                    ),
+                    SectionTitle("Gender"),
                     SizedBox(
                       height: MediaQuery.of(context).size.height < 700 ? 5 : 10,
                     ),
@@ -166,14 +160,7 @@ class _HomePageState extends State<HomePage>
                       },
                     ),
                     Spacer(),
-                    Text(
-                      "Age",
-                      style: TextStyle(
-                        color: Theme.of(context).accentColor,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textScaleFactor: 1.5,
-                    ),
+                    SectionTitle("Age"),
                     SizedBox(
                       height: MediaQuery.of(context).size.height < 700 ? 5 : 10,
                     ),
@@ -190,7 +177,8 @@ class _HomePageState extends State<HomePage>
                                   color: Theme.of(context)
                                       .textTheme
                                       .caption
-                                      .color),
+                                      .color
+                                      .withOpacity(0.5)),
                             ),
                           );
                         return Center(
@@ -230,14 +218,7 @@ class _HomePageState extends State<HomePage>
                       },
                     ),
                     Spacer(),
-                    Text(
-                      "Height",
-                      style: TextStyle(
-                        color: Theme.of(context).accentColor,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textScaleFactor: 1.5,
-                    ),
+                    SectionTitle("Height"),
                     SizedBox(
                       height: MediaQuery.of(context).size.height < 700 ? 0 : 10,
                     ),
@@ -270,7 +251,8 @@ class _HomePageState extends State<HomePage>
                                     color: Theme.of(context)
                                         .textTheme
                                         .caption
-                                        .color,
+                                        .color
+                                        .withOpacity(0.5),
                                     fontSize: 20,
                                   ),
                                 ),
@@ -312,14 +294,7 @@ class _HomePageState extends State<HomePage>
                       },
                     ),
                     Spacer(),
-                    Text(
-                      "Weight",
-                      style: TextStyle(
-                        color: Theme.of(context).accentColor,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textScaleFactor: 1.5,
-                    ),
+                    SectionTitle("Weight"),
                     SizedBox(
                       height: MediaQuery.of(context).size.height < 700 ? 0 : 10,
                     ),
@@ -350,7 +325,8 @@ class _HomePageState extends State<HomePage>
                                     color: Theme.of(context)
                                         .textTheme
                                         .caption
-                                        .color,
+                                        .color
+                                        .withOpacity(0.5),
                                     fontSize: 20,
                                   ),
                                 ),

@@ -62,7 +62,7 @@ class MyApp extends StatelessWidget {
           textTheme: GoogleFonts.montserratTextTheme(textTheme).copyWith(
             headline5: TextStyle(color: Colors.white),
             headline6: TextStyle(color: Colors.grey[200]),
-            caption: TextStyle(color: Colors.grey[600]),
+            caption: TextStyle(color: Colors.grey[400]),
           ),
           dividerColor: Colors.grey[600],
           bottomAppBarColor: Colors.black,
