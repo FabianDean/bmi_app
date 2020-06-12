@@ -58,7 +58,7 @@ class MyApp extends StatelessWidget {
         ),
         darkTheme: ThemeData(
           brightness: Brightness.dark,
-          accentColor: Colors.grey[300],
+          accentColor: Globals.mainColorDark,
           textTheme: GoogleFonts.montserratTextTheme(textTheme).copyWith(
             headline5: TextStyle(color: Colors.white),
             headline6: TextStyle(color: Colors.grey[200]),

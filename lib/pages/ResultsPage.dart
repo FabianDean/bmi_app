@@ -38,11 +38,63 @@ class _ResultsPageState extends State<ResultsPage> {
             ? Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(
-                    "BMI: " + _result.bmi.toString(),
-                    style: Theme.of(context).textTheme.headline6,
+                  Align(
+                    alignment: Alignment.center,
+                    child: RichText(
+                      text: TextSpan(
+                        children: <TextSpan>[
+                          TextSpan(
+                            text: "A BMI of ",
+                            style: GoogleFonts.montserrat(
+                              color: Theme.of(context)
+                                  .textTheme
+                                  .headline6
+                                  .color
+                                  .withOpacity(0.9),
+                              fontSize: 22,
+                            ),
+                          ),
+                          TextSpan(
+                            text: _result.bmi.toString(),
+                            style: GoogleFonts.montserrat(
+                              color: Theme.of(context).accentColor,
+                              fontSize: 22,
+                            ),
+                          ),
+                          TextSpan(
+                            text: (" is considered "),
+                            style: GoogleFonts.montserrat(
+                              color: Theme.of(context)
+                                  .textTheme
+                                  .headline6
+                                  .color
+                                  .withOpacity(0.9),
+                              fontSize: 22,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      _result.category
+                          .toString()
+                          .substring(9)
+                          .toUpperCase(), // removes "Category." in string
+                      style: GoogleFonts.montserrat(
+                        color: Theme.of(context).accentColor,
+                        fontSize: 22,
+                      ),
+                    ),
                   ),
                   SizedBox(height: 20),
+                  Chart(null),
+                  SizedBox(height: 20),
+                  SectionTitle("Input"),
+                  SizedBox(height: 10),
                   SectionTitle("Summary"),
                   SizedBox(height: 10),
                   Text(

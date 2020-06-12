@@ -21,7 +21,7 @@ class _HomePageState extends State<HomePage>
   TextEditingController _weightController = TextEditingController();
   final _heightKey = GlobalKey<FormFieldState>();
   TextEditingController _heightController = TextEditingController();
-  int _age;
+  int _age, _minAge = 2, _maxAge = 110;
   SharedPreferences _prefs;
 
   @override
@@ -39,6 +39,13 @@ class _HomePageState extends State<HomePage>
 
   Future<void> _saveData() async {
     final systemModel = Provider.of<SystemModel>(context, listen: false);
+    final keys = _prefs.getKeys();
+
+    // limit to 10 data sets saved in memory
+    if (keys.length >= 10) {
+      await _prefs
+          .remove(keys.first); // remove oldest key before adding new data
+    }
 
     await _prefs.setStringList(DateTime.now().toString() + "_bmi", [
       _isSelected[0] == true ? "Male" : "Female",
@@ -61,9 +68,10 @@ class _HomePageState extends State<HomePage>
     ]);
   }
 
-  bool _validateAge() {
-    return _age != null && _age > 0 && _age < 111;
-  }
+  // age is optional
+  // bool _validateAge() {
+  //   return _age == null || (_age != null && _age >= _minAge && _age <= _maxAge);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -375,24 +383,24 @@ class _HomePageState extends State<HomePage>
                         color: Globals.mainColor,
                         textTheme: ButtonTextTheme.primary,
                         onPressed: () async {
-                          bool isAgeValid = _validateAge();
-                          if (!isAgeValid) {
-                            Scaffold.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  'Select valid age',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                backgroundColor: Colors.redAccent,
-                              ),
-                            );
-                          }
+                          // bool isAgeValid = _validateAge();
+                          // if (!isAgeValid) {
+                          //   Scaffold.of(context).showSnackBar(
+                          //     SnackBar(
+                          //       content: Text(
+                          //         'Select valid age',
+                          //         style: TextStyle(
+                          //           color: Colors.white,
+                          //         ),
+                          //       ),
+                          //       backgroundColor: Colors.redAccent,
+                          //     ),
+                          //   );
+                          // }
                           // Validate returns true if the form is valid, otherwise false.
-                          if (isAgeValid &
+                          if ( //isAgeValid &
                               _heightKey.currentState.validate() &
-                              _weightKey.currentState.validate()) {
+                                  _weightKey.currentState.validate()) {
                             await _saveData();
                             _updateInputModel();
                             Navigator.of(context).pushNamed("/results");

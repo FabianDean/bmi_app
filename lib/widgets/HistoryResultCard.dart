@@ -11,7 +11,8 @@ class HistoryResultCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String gender = input.elementAt(0);
-    final int age = int.parse(input.elementAt(1));
+    final int age =
+        input.elementAt(1) == "null" ? null : int.parse(input.elementAt(1));
     final double height = double.parse(input.elementAt(2));
     final double weight = double.parse(input.elementAt(3));
     final String system = input.elementAt(4);
@@ -41,7 +42,7 @@ class HistoryResultCard extends StatelessWidget {
               alignment: Alignment.centerLeft,
               margin: EdgeInsets.only(right: 10),
               padding: EdgeInsets.all(0),
-              width: 10,
+              width: 5,
               decoration: BoxDecoration(
                 color: indicatorColor,
                 borderRadius: BorderRadius.only(
@@ -74,7 +75,7 @@ class HistoryResultCard extends StatelessWidget {
                     ),
                 children: <InlineSpan>[
                   TextSpan(
-                    text: "$age years old",
+                    text: age == null ? "N/A" : "$age years old",
                     style: Theme.of(context).textTheme.headline6,
                   ),
                 ],
