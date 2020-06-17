@@ -201,7 +201,7 @@ class _HomePageState extends State<HomePage>
                                   ),
                                 ),
                                 TextSpan(
-                                  text: (" years old"),
+                                  text: " years old",
                                   style: GoogleFonts.montserrat(
                                     color: Theme.of(context)
                                         .textTheme

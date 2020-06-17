@@ -18,7 +18,8 @@ double _calculateBMI(double height, double weight, String system) {
   return bmi;
 }
 
-Result getResult(double height, double weight, String system) {
+Result getResult(
+    String gender, int age, double height, double weight, String system) {
   double bmi = _calculateBMI(height, weight, system);
   String summary;
   Category category;

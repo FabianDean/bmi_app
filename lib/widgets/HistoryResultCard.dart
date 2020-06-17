@@ -11,12 +11,11 @@ class HistoryResultCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String gender = input.elementAt(0);
-    final int age =
-        input.elementAt(1) == "null" ? null : int.parse(input.elementAt(1));
+    final int age = int.tryParse(input.elementAt(1));
     final double height = double.parse(input.elementAt(2));
     final double weight = double.parse(input.elementAt(3));
     final String system = input.elementAt(4);
-    final Result result = BMI.getResult(height, weight, system);
+    final Result result = BMI.getResult(gender, age, height, weight, system);
     Color indicatorColor;
     if (result.category == Category.underweight ||
         result.category == Category.obese)
