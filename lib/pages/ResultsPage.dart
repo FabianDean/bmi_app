@@ -51,6 +51,7 @@ class _ResultsPageState extends State<ResultsPage> {
             ? Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
+                  SizedBox(height: 20), // add some padding to top
                   Align(
                     alignment: Alignment.center,
                     child: RichText(
@@ -106,11 +107,13 @@ class _ResultsPageState extends State<ResultsPage> {
                     ),
                   ),
                   SizedBox(height: 20),
-                  Chart(null),
+                  Expanded(
+                    child: Chart(input: null),
+                  ),
                   SizedBox(height: 10),
-                  Divider(indent: 30, endIndent: 30),
+                  Divider(indent: 20, endIndent: 20),
                   _inputSection(),
-                  Divider(indent: 30, endIndent: 30),
+                  Divider(indent: 20, endIndent: 20),
                   SizedBox(height: 10),
                   SectionTitle("Summary"),
                   SizedBox(height: 10),
@@ -200,7 +203,6 @@ class _ResultsPageState extends State<ResultsPage> {
           builder: (context, constraint) {
             return SingleChildScrollView(
               padding: EdgeInsets.only(
-                top: 20,
                 left: 20,
                 right: 20,
               ),
