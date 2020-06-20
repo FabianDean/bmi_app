@@ -55,79 +55,8 @@ class _ChartState extends ScatterActionState<Chart>
             right: 0,
             left: 0,
             top: 0,
-            bottom: 100,
+            bottom: 0,
             child: ScatterChart(controller)),
-        Positioned(
-          left: 0,
-          right: 0,
-          bottom: 0,
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Row(
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Expanded(
-                    child: Center(
-                        child: Slider(
-                            value: _count.toDouble(),
-                            min: 0,
-                            max: 500,
-                            onChanged: (value) {
-                              _count = value.toInt();
-                              _initScatterData(_count, _range);
-                            })),
-                  ),
-                  Container(
-                      constraints: BoxConstraints.expand(height: 50, width: 60),
-                      padding: EdgeInsets.only(right: 15.0),
-                      child: Center(
-                          child: Text(
-                        "$_count",
-                        textDirection: TextDirection.ltr,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: ColorUtils.BLACK,
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold),
-                      ))),
-                ],
-              ),
-              Row(
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Expanded(
-                    child: Center(
-                        child: Slider(
-                            value: _range,
-                            min: 0,
-                            max: 200,
-                            onChanged: (value) {
-                              _range = value;
-                              _initScatterData(_count, _range);
-                            })),
-                  ),
-                  Container(
-                      constraints: BoxConstraints.expand(height: 50, width: 60),
-                      padding: EdgeInsets.only(right: 15.0),
-                      child: Center(
-                          child: Text(
-                        "${_range.toInt()}",
-                        textDirection: TextDirection.ltr,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: ColorUtils.BLACK,
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold),
-                      ))),
-                ],
-              )
-            ],
-          ),
-        )
       ],
     );
   }
@@ -135,38 +64,39 @@ class _ChartState extends ScatterActionState<Chart>
   void _initController() {
     var desc = Description()..enabled = false;
     controller = ScatterChartController(
-        axisLeftSettingFunction: (axisLeft, controller) {
-          axisLeft
-            ..setAxisMinimum(0)
-            ..typeface = Util.LIGHT;
-        },
-        axisRightSettingFunction: (axisRight, controller) {
-          axisRight.enabled = (false);
-        },
-        legendSettingFunction: (legend, controller) {
-          legend
-            ..verticalAlignment = (LegendVerticalAlignment.TOP)
-            ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
-            ..orientation = (LegendOrientation.VERTICAL)
-            ..drawInside = (false)
-            ..typeface = Util.LIGHT
-            ..xOffset = (5);
-        },
-        xAxisSettingFunction: (xAxis, controller) {
-          xAxis
-            ..drawGridLines = (false)
-            ..typeface = Util.LIGHT;
-        },
-        drawGridBackground: false,
-        dragXEnabled: true,
-        dragYEnabled: true,
-        scaleXEnabled: true,
-        scaleYEnabled: true,
-        pinchZoomEnabled: true,
-        maxVisibleCount: 200,
-        maxHighlightDistance: 50,
-        selectionListener: this,
-        description: desc);
+      axisLeftSettingFunction: (axisLeft, controller) {
+        axisLeft
+          ..setAxisMinimum(0)
+          ..typeface = Util.LIGHT;
+      },
+      axisRightSettingFunction: (axisRight, controller) {
+        axisRight.enabled = (false);
+      },
+      legendSettingFunction: (legend, controller) {
+        legend
+          ..verticalAlignment = (LegendVerticalAlignment.TOP)
+          ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
+          ..orientation = (LegendOrientation.VERTICAL)
+          ..drawInside = (false)
+          ..typeface = Util.LIGHT
+          ..xOffset = (5);
+      },
+      xAxisSettingFunction: (xAxis, controller) {
+        xAxis
+          ..drawGridLines = (true)
+          ..typeface = Util.LIGHT;
+      },
+      drawGridBackground: true,
+      dragXEnabled: false,
+      dragYEnabled: false,
+      scaleXEnabled: false,
+      scaleYEnabled: false,
+      pinchZoomEnabled: false,
+      maxVisibleCount: 200,
+      maxHighlightDistance: 50,
+      selectionListener: this,
+      description: desc,
+    );
   }
 
   void _initScatterData(int count, double range) async {
@@ -196,14 +126,17 @@ class _ChartState extends ScatterActionState<Chart>
 
     // create a dataset and give it a type
     ScatterDataSet set1 = ScatterDataSet(values1, "DS 1");
+    set1.setDrawValues(false);
     set1.setScatterShape(ScatterShape.SQUARE);
     set1.setColor1(ColorUtils.COLORFUL_COLORS[0]);
     ScatterDataSet set2 = ScatterDataSet(values2, "DS 2");
+    set2.setDrawValues(false);
     set2.setScatterShape(ScatterShape.CIRCLE);
     set2.setScatterShapeHoleColor(ColorUtils.COLORFUL_COLORS[3]);
     set2.setScatterShapeHoleRadius(3);
     set2.setColor1(ColorUtils.COLORFUL_COLORS[1]);
     ScatterDataSet set3 = ScatterDataSet(values3, "DS 3");
+    set3.setDrawValues(false);
     set3.setShapeRenderer(CustomScatterShapeRenderer());
     set3.setColor1(ColorUtils.COLORFUL_COLORS[2]);
 
