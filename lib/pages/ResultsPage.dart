@@ -122,6 +122,9 @@ class _ResultsPageState extends State<ResultsPage> {
                     ),
                     textScaleFactor: 1.2,
                   ),
+                  SizedBox(height: 20),
+                  SectionTitle("Breakdown"),
+                  Text(_result.zPercentile.toString())
                 ],
               )
             : Text(

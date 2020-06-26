@@ -270,7 +270,7 @@ class _HomePageState extends State<HomePage>
                                   if (value.isEmpty) {
                                     return 'Please enter a number';
                                   }
-                                  int height = int.parse(value);
+                                  double height = double.parse(value);
                                   if (systemModel.system == System.imperial &&
                                       (height < 20 || height > 90)) {
                                     return 'Number must be between 20 and 90';
@@ -343,7 +343,7 @@ class _HomePageState extends State<HomePage>
                                   if (value.isEmpty) {
                                     return 'Please enter a number';
                                   }
-                                  int weight = int.parse(value);
+                                  double weight = double.parse(value);
                                   if (systemModel.system == System.imperial &&
                                       (weight < 10 || weight > 400)) {
                                     return 'Number must be between 10 and 400';

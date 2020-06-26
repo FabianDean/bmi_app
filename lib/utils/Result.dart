@@ -4,11 +4,13 @@ enum Category { underweight, healthy, overweight, obese }
 
 class Result {
   double bmi;
+  int zPercentile;
   String summary;
   Category category;
 
-  Result(b, s, c) {
+  Result(b, z, s, c) {
     bmi = b;
+    zPercentile = z;
     summary = s;
     category = c;
   }
@@ -27,6 +29,7 @@ Result getResult(
 
   Map<String, dynamic> calculations;
 
+  height = height / 100.0; // height needed in meters – 150.0 cm / 100.0 = 1.5 m
   if (system == "Metric") {
     calculations = CalcBMI.calcBMIandPerc_Metr(
         weight, height, gender == "Male" ? "1" : "2", ageInMonths);
@@ -36,23 +39,50 @@ Result getResult(
   }
 
   double bmi = calculations["bmi"];
+  int zPercentile = calculations["z_perc"];
   String summary;
   Category category;
 
-  if (bmi < 18.5) {
-    category = Category.underweight;
-    summary =
-        "This result is considered underweight. Further assessment by a healthcare provider is suggested to determine possible causes.";
-  } else if (bmi >= 18.5 && bmi <= 24.9) {
-    category = Category.healthy;
-    summary = "This result is within a healthy weight range.";
-  } else if (bmi >= 25 && bmi <= 29.9) {
-    category = Category.overweight;
-    summary = "This result is considered overweight.";
+  Map<String, String> summaries = {
+    "underweight":
+        "This result is considered underweight. Further assessment by a healthcare provider is suggested to determine possible causes.",
+    "healthy":
+        "This result is within a healthy weight range. Proper diet and exercise is still encouraged to promote good health.",
+    "overweight":
+        "This result is considered overweight. Although not considered obese, improved diet and exercise is encouraged to promote good health.",
+    "obese":
+        "This result is considered obese and points to possible weight-related health problems. Further assessment by a healthcare provider is suggested to determine possible causes."
+  };
+
+  // if not a BMI-for-Age calculation
+  if (age == null) {
+    if (bmi < 18.5) {
+      category = Category.underweight;
+      summary = summaries["underweight"];
+    } else if (bmi >= 18.5 && bmi <= 24.9) {
+      category = Category.healthy;
+      summary = summaries["healthy"];
+    } else if (bmi >= 25 && bmi <= 29.9) {
+      category = Category.overweight;
+      summary = summaries["overweight"];
+    } else {
+      category = Category.obese;
+      summary = summaries["obese"];
+    }
   } else {
-    category = Category.obese;
-    summary =
-        "This result is considered obese and points to possible weight-related health problems. Further assessment by a healthcare provider is suggested to determine possible causes.";
+    if (zPercentile < 5) {
+      category = Category.underweight;
+      summary = summaries["underweight"];
+    } else if (zPercentile >= 5 && zPercentile < 85) {
+      category = Category.healthy;
+      summary = summaries["healthy"];
+    } else if (zPercentile >= 85 && zPercentile < 95) {
+      category = Category.overweight;
+      summary = summaries["overweight"];
+    } else {
+      category = Category.obese;
+      summary = summaries["obese"];
+    }
   }
-  return Result(bmi, summary, category);
+  return Result(bmi, zPercentile == -1 ? null : zPercentile, summary, category);
 }
