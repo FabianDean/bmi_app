@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
-import '../utils/bmi.dart' as BMI;
+import '../utils/Result.dart' as Res;
 import '../utils/Result.dart';
 
 class HistoryResultCard extends StatelessWidget {
@@ -15,7 +15,7 @@ class HistoryResultCard extends StatelessWidget {
     final double height = double.parse(input.elementAt(2));
     final double weight = double.parse(input.elementAt(3));
     final String system = input.elementAt(4);
-    final Result result = BMI.getResult(gender, age, height, weight, system);
+    final Result result = Res.getResult(gender, age, height, weight, system);
     Color indicatorColor;
     if (result.category == Category.underweight ||
         result.category == Category.obese)

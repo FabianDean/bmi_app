@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../utils/globals.dart' as Globals;
-import '../utils/bmi.dart' as BMI;
+import '../utils/Result.dart' as Res;
 
 class ResultsPage extends StatefulWidget {
   @override
@@ -23,7 +23,7 @@ class _ResultsPageState extends State<ResultsPage> {
     if (_inputModel.input != null) {
       setState(() {
         // calculate BMI here
-        _result = BMI.getResult(
+        _result = Res.getResult(
           _inputModel.input.elementAt(0), // gender
           int.tryParse(_inputModel.input.elementAt(1)), // age
           double.parse(_inputModel.input.elementAt(2)), // height
@@ -107,9 +107,7 @@ class _ResultsPageState extends State<ResultsPage> {
                     ),
                   ),
                   SizedBox(height: 20),
-                  Expanded(
-                    child: Chart(input: null),
-                  ),
+                  Chart(input: null),
                   SizedBox(height: 10),
                   Divider(indent: 20, endIndent: 20),
                   _inputSection(),

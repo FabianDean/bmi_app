@@ -21,7 +21,7 @@ class _HomePageState extends State<HomePage>
   TextEditingController _weightController = TextEditingController();
   final _heightKey = GlobalKey<FormFieldState>();
   TextEditingController _heightController = TextEditingController();
-  int _age, _minAge = 2, _maxAge = 110;
+  int _age, _maxAge = 20;
   SharedPreferences _prefs;
 
   @override
@@ -67,11 +67,6 @@ class _HomePageState extends State<HomePage>
       systemModel.system == System.imperial ? "Imperial" : "Metric",
     ]);
   }
-
-  // age is optional
-  // bool _validateAge() {
-  //   return _age == null || (_age != null && _age >= _minAge && _age <= _maxAge);
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -168,14 +163,20 @@ class _HomePageState extends State<HomePage>
                       },
                     ),
                     Spacer(),
-                    SectionTitle("Age"),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        SectionTitle("Age (optional)"),
+                        Text("*BMI-for-Age: 2-20 yrs only")
+                      ],
+                    ),
                     SizedBox(
                       height: MediaQuery.of(context).size.height < 700 ? 5 : 10,
                     ),
                     CupertinoPicker.builder(
                       backgroundColor: Globals.mainColor.withOpacity(0.02),
                       itemExtent: 50,
-                      childCount: 110,
+                      childCount: _maxAge,
                       itemBuilder: (context, index) {
                         if (index == 0)
                           return Center(
@@ -242,8 +243,8 @@ class _HomePageState extends State<HomePage>
                                 keyboardType: TextInputType.number,
                                 textAlign: TextAlign.center,
                                 maxLength: systemModel.system == System.imperial
-                                    ? 2
-                                    : 3,
+                                    ? 4
+                                    : 5,
                                 buildCounter: (BuildContext context,
                                         {int currentLength,
                                         int maxLength,
@@ -317,7 +318,7 @@ class _HomePageState extends State<HomePage>
                                 controller: _weightController,
                                 keyboardType: TextInputType.number,
                                 textAlign: TextAlign.center,
-                                maxLength: 3,
+                                maxLength: 5,
                                 buildCounter: (BuildContext context,
                                         {int currentLength,
                                         int maxLength,
@@ -383,24 +384,8 @@ class _HomePageState extends State<HomePage>
                         color: Globals.mainColor,
                         textTheme: ButtonTextTheme.primary,
                         onPressed: () async {
-                          // bool isAgeValid = _validateAge();
-                          // if (!isAgeValid) {
-                          //   Scaffold.of(context).showSnackBar(
-                          //     SnackBar(
-                          //       content: Text(
-                          //         'Select valid age',
-                          //         style: TextStyle(
-                          //           color: Colors.white,
-                          //         ),
-                          //       ),
-                          //       backgroundColor: Colors.redAccent,
-                          //     ),
-                          //   );
-                          // }
-                          // Validate returns true if the form is valid, otherwise false.
-                          if ( //isAgeValid &
-                              _heightKey.currentState.validate() &
-                                  _weightKey.currentState.validate()) {
+                          if (_heightKey.currentState.validate() &
+                              _weightKey.currentState.validate()) {
                             await _saveData();
                             _updateInputModel();
                             Navigator.of(context).pushNamed("/results");
