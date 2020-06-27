@@ -29,8 +29,9 @@ Result getResult(
 
   Map<String, dynamic> calculations;
 
-  height = height / 100.0; // height needed in meters – 150.0 cm / 100.0 = 1.5 m
   if (system == "Metric") {
+    height =
+        height / 100.0; // height needed in meters – 150.0 cm / 100.0 = 1.5 mc
     calculations = CalcBMI.calcBMIandPerc_Metr(
         weight, height, gender == "Male" ? "1" : "2", ageInMonths);
   } else {
