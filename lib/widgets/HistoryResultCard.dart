@@ -25,6 +25,13 @@ class HistoryResultCard extends StatelessWidget {
     else if (result.category == Category.overweight)
       indicatorColor = Colors.yellow;
 
+    int years, months;
+
+    if (age != null) {
+      years = age ~/ 12;
+      months = age % 12;
+    }
+
     return ListTile(
       contentPadding: EdgeInsets.only(
         left: 0,
@@ -74,7 +81,7 @@ class HistoryResultCard extends StatelessWidget {
                     ),
                 children: <InlineSpan>[
                   TextSpan(
-                    text: age == null ? "N/A" : "$age years old",
+                    text: age == null ? "N/A" : "$years yrs $months mos",
                     style: Theme.of(context).textTheme.headline6,
                   ),
                 ],

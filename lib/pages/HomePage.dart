@@ -20,7 +20,6 @@ class _HomePageState extends State<HomePage>
   TextEditingController _weightController = TextEditingController();
   final _heightKey = GlobalKey<FormFieldState>();
   TextEditingController _heightController = TextEditingController();
-  int _age;
   SharedPreferences _prefs;
   int _years;
   int _months;
@@ -28,7 +27,7 @@ class _HomePageState extends State<HomePage>
     if (index == 0) return "Years";
     return index + 1;
   });
-  List<dynamic> _validMonths = List.generate(13, (index) {
+  List<dynamic> _validMonths = List.generate(12, (index) {
     if (index == 0) return "Months";
     return index;
   });
@@ -56,9 +55,13 @@ class _HomePageState extends State<HomePage>
           .remove(keys.first); // remove oldest key before adding new data
     }
 
+    int age; // age in months
+    if (_years != null) {
+      age = (_years * 12) + (_months == null ? 0 : _months);
+    }
     await _prefs.setStringList(DateTime.now().toString() + "_bmi", [
       _isSelected[0] == true ? "Male" : "Female",
-      _age.toString(),
+      age.toString(),
       _heightKey.currentState.value.toString(),
       _weightKey.currentState.value.toString(),
       systemModel.system == System.imperial ? "Imperial" : "Metric",
@@ -68,9 +71,14 @@ class _HomePageState extends State<HomePage>
   void _updateInputModel() {
     final inputModel = Provider.of<UserInputModel>(context, listen: false);
     final systemModel = Provider.of<SystemModel>(context, listen: false);
+
+    int age; // age in months
+    if (_years != null) {
+      age = (_years * 12) + (_months == null ? 0 : _months);
+    }
     inputModel.changeInput([
       _isSelected[0] == true ? "Male" : "Female",
-      _age.toString(),
+      age.toString(),
       _heightKey.currentState.value.toString(),
       _weightKey.currentState.value.toString(),
       systemModel.system == System.imperial ? "Imperial" : "Metric",
@@ -192,8 +200,6 @@ class _HomePageState extends State<HomePage>
                           width: 80,
                           child: DropdownButtonFormField(
                             value: _years,
-                            style: Theme.of(context).textTheme.caption.copyWith(
-                                fontSize: 20, color: Globals.mainColor),
                             hint: Text(
                               "Years",
                               style:
@@ -209,10 +215,23 @@ class _HomePageState extends State<HomePage>
                             items: _validYears
                                 .map(
                                   (item) => DropdownMenuItem(
-                                    value: item is String ? -1 : item,
+                                    value: item is String ? null : item,
                                     child: Center(
                                       child: Text(
                                         "$item",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .caption
+                                            .copyWith(
+                                              fontSize: 20,
+                                              color: !(item is String)
+                                                  ? Globals.mainColor
+                                                  : Theme.of(context)
+                                                      .textTheme
+                                                      .caption
+                                                      .color
+                                                      .withOpacity(0.5),
+                                            ),
                                       ),
                                     ),
                                   ),
@@ -220,7 +239,7 @@ class _HomePageState extends State<HomePage>
                                 .toList(),
                             onChanged: (value) {
                               setState(() {
-                                _years = value is String ? -1 : value;
+                                _years = value is String ? null : value;
                               });
                             },
                           ),
@@ -252,7 +271,7 @@ class _HomePageState extends State<HomePage>
                             items: _validMonths
                                 .map(
                                   (item) => DropdownMenuItem(
-                                    value: item is String ? -1 : item,
+                                    value: item is String ? null : item,
                                     child: Text(
                                       "$item",
                                       style: Theme.of(context)
@@ -274,7 +293,7 @@ class _HomePageState extends State<HomePage>
                                 .toList(),
                             onChanged: (value) {
                               setState(() {
-                                _months = value is String ? -1 : value;
+                                _months = value is String ? null : value;
                               });
                             },
                           ),
@@ -446,11 +465,28 @@ class _HomePageState extends State<HomePage>
                         color: Globals.mainColor,
                         textTheme: ButtonTextTheme.primary,
                         onPressed: () async {
-                          if (_heightKey.currentState.validate() &
+                          String message;
+                          if (_months != null &&
+                              _months > 0 &&
+                              _years == null) {
+                            message =
+                                "Minimum age for BMI-for-Age is 2 years old";
+                          }
+                          if ((message == null) &
+                              _heightKey.currentState.validate() &
                               _weightKey.currentState.validate()) {
                             await _saveData();
                             _updateInputModel();
                             Navigator.of(context).pushNamed("/results");
+                          }
+                          if (message != null) {
+                            Scaffold.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(message),
+                                backgroundColor: Colors.red,
+                                duration: Duration(milliseconds: 3500),
+                              ),
+                            );
                           }
                         },
                       ),

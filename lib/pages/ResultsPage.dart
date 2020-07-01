@@ -138,19 +138,17 @@ class _ResultsPageState extends State<ResultsPage> {
   /* Holds information used for calculation (gender, age, height, weight) */
   Widget _inputSection() {
     /* Quick helper widget to avoid code duplication in input section */
-    Widget item(int i, String unit) {
+    Widget item(dynamic value, String unit) {
       return RichText(
         text: TextSpan(
           children: <TextSpan>[
             TextSpan(
-              text: _inputModel.input.elementAt(i) == "null"
-                  ? "N/A"
-                  : _inputModel.input.elementAt(i),
+              text: value == null ? "N/A" : value.toString(),
               style: Theme.of(context).textTheme.caption.copyWith(
                     fontSize: 18,
                   ),
             ),
-            unit == null || _inputModel.input.elementAt(i) == "null"
+            unit == null
                 ? TextSpan()
                 : TextSpan(
                     text: unit,
@@ -173,16 +171,25 @@ class _ResultsPageState extends State<ResultsPage> {
       children: <Widget>[
         Column(
           children: <Widget>[
-            item(0, null),
+            item(_inputModel.input.elementAt(0), null),
             SizedBox(height: 10),
-            item(2, " in"),
+            item(_inputModel.input.elementAt(2), " in"),
           ],
         ),
         Column(
           children: <Widget>[
-            item(1, " years"),
+            _inputModel.input.elementAt(1) == "null"
+                ? item(null, null)
+                : Row(
+                    children: <Widget>[
+                      item(int.parse(_inputModel.input.elementAt(1)) ~/ 12,
+                          " y"),
+                      SizedBox(width: 5),
+                      item(int.parse(_inputModel.input.elementAt(1)) % 12, " m")
+                    ],
+                  ),
             SizedBox(height: 10),
-            item(3, " lbs"),
+            item(_inputModel.input.elementAt(3), " lbs"),
           ],
         )
       ],

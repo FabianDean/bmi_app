@@ -22,21 +22,16 @@ class Result {
  */
 Result getResult(
     String gender, int age, double height, double weight, String system) {
-  int ageInMonths;
-  if (age != null) {
-    ageInMonths = age * 12; // floor for now; impl. months future update
-  }
-
   Map<String, dynamic> calculations;
 
   if (system == "Metric") {
     height =
         height / 100.0; // height needed in meters – 150.0 cm / 100.0 = 1.5 mc
     calculations = CalcBMI.calcBMIandPerc_Metr(
-        weight, height, gender == "Male" ? "1" : "2", ageInMonths);
+        weight, height, gender == "Male" ? "1" : "2", age);
   } else {
     calculations = CalcBMI.calcBMIandPerc_Eng(
-        weight, height, gender == "Male" ? "1" : "2", ageInMonths);
+        weight, height, gender == "Male" ? "1" : "2", age);
   }
 
   double bmi = calculations["bmi"];
