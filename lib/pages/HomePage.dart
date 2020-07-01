@@ -2,7 +2,6 @@ import 'package:easy_bmi/models/UserInputModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:easy_bmi/models/SystemModel.dart';
@@ -21,8 +20,18 @@ class _HomePageState extends State<HomePage>
   TextEditingController _weightController = TextEditingController();
   final _heightKey = GlobalKey<FormFieldState>();
   TextEditingController _heightController = TextEditingController();
-  int _age, _maxAge = 20;
+  int _age;
   SharedPreferences _prefs;
+  int _years;
+  int _months;
+  List<dynamic> _validYears = List.generate(20, (index) {
+    if (index == 0) return "Years";
+    return index + 1;
+  });
+  List<dynamic> _validMonths = List.generate(13, (index) {
+    if (index == 0) return "Months";
+    return index;
+  });
 
   @override
   bool get wantKeepAlive => true;
@@ -167,64 +176,117 @@ class _HomePageState extends State<HomePage>
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         SectionTitle("Age (optional)"),
-                        Text("*BMI-for-Age: 2-20 yrs only")
+                        Text(
+                          "*BMI-for-Age: 2-20 yrs only",
+                          style: Theme.of(context).textTheme.caption,
+                        )
                       ],
                     ),
                     SizedBox(
                       height: MediaQuery.of(context).size.height < 700 ? 5 : 10,
                     ),
-                    CupertinoPicker.builder(
-                      backgroundColor: Globals.mainColor.withOpacity(0.02),
-                      itemExtent: 50,
-                      childCount: _maxAge,
-                      itemBuilder: (context, index) {
-                        if (index == 0)
-                          return Center(
-                            child: Text(
-                              "–– Scroll to select age ––",
-                              style: GoogleFonts.montserrat(
-                                  color: Theme.of(context)
-                                      .textTheme
-                                      .caption
-                                      .color
-                                      .withOpacity(0.5)),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        SizedBox(
+                          width: 80,
+                          child: DropdownButtonFormField(
+                            value: _years,
+                            style: Theme.of(context).textTheme.caption.copyWith(
+                                fontSize: 20, color: Globals.mainColor),
+                            hint: Text(
+                              "Years",
+                              style:
+                                  Theme.of(context).textTheme.caption.copyWith(
+                                        fontSize: 20,
+                                        color: Theme.of(context)
+                                            .textTheme
+                                            .caption
+                                            .color
+                                            .withOpacity(0.5),
+                                      ),
                             ),
-                          );
-                        return Center(
-                          child: RichText(
-                            text: TextSpan(
-                              children: <TextSpan>[
-                                TextSpan(
-                                  text: (index + 1).toString(),
-                                  style: GoogleFonts.montserrat(
-                                    color: Globals.mainColor,
-                                    fontSize: 22,
+                            items: _validYears
+                                .map(
+                                  (item) => DropdownMenuItem(
+                                    value: item is String ? -1 : item,
+                                    child: Center(
+                                      child: Text(
+                                        "$item",
+                                      ),
+                                    ),
                                   ),
-                                ),
-                                TextSpan(
-                                  text: " years old",
-                                  style: GoogleFonts.montserrat(
-                                    color: Theme.of(context)
-                                        .textTheme
-                                        .headline6
-                                        .color
-                                        .withOpacity(0.9),
-                                    fontSize: 22,
-                                  ),
-                                ),
-                              ],
-                            ),
+                                )
+                                .toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                _years = value is String ? -1 : value;
+                              });
+                            },
                           ),
-                        );
-                      },
-                      onSelectedItemChanged: (value) {
-                        setState(() {
-                          if (value == 0)
-                            _age = null; // picker on placeholder
-                          else
-                            _age = value + 1;
-                        });
-                      },
+                        ),
+                        SizedBox(width: 10),
+                        Text(
+                          "yrs",
+                          style: TextStyle(
+                            color: Theme.of(context).textTheme.headline5.color,
+                          ),
+                        ),
+                        SizedBox(width: 60),
+                        SizedBox(
+                          width: 100,
+                          child: DropdownButtonFormField(
+                            value: _months,
+                            hint: Text(
+                              "Months",
+                              style:
+                                  Theme.of(context).textTheme.caption.copyWith(
+                                        fontSize: 20,
+                                        color: Theme.of(context)
+                                            .textTheme
+                                            .caption
+                                            .color
+                                            .withOpacity(0.5),
+                                      ),
+                            ),
+                            items: _validMonths
+                                .map(
+                                  (item) => DropdownMenuItem(
+                                    value: item is String ? -1 : item,
+                                    child: Text(
+                                      "$item",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .caption
+                                          .copyWith(
+                                            fontSize: 20,
+                                            color: !(item is String)
+                                                ? Globals.mainColor
+                                                : Theme.of(context)
+                                                    .textTheme
+                                                    .caption
+                                                    .color
+                                                    .withOpacity(0.5),
+                                          ),
+                                    ),
+                                  ),
+                                )
+                                .toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                _months = value is String ? -1 : value;
+                              });
+                            },
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        Text(
+                          "mos",
+                          style: TextStyle(
+                            color: Theme.of(context).textTheme.headline5.color,
+                          ),
+                        ),
+                      ],
                     ),
                     Spacer(),
                     SectionTitle("Height"),
