@@ -42,10 +42,12 @@ class _HomePageState extends State<HomePage>
   }
 
   Future<void> _getPrefs() async {
+    print("LOG: getting data");
     _prefs = await SharedPreferences.getInstance();
   }
 
   Future<void> _saveData() async {
+    print("LOG: saved data");
     final systemModel = Provider.of<SystemModel>(context, listen: false);
     final keys = _prefs.getKeys();
 
