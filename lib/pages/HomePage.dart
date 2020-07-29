@@ -23,7 +23,7 @@ class _HomePageState extends State<HomePage>
   SharedPreferences _prefs;
   int _years;
   int _months;
-  List<dynamic> _validYears = List.generate(20, (index) {
+  List<dynamic> _validYears = List.generate(19, (index) {
     if (index == 0) return "Years";
     return index + 1;
   });

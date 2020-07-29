@@ -160,7 +160,7 @@ class _ResultsPageState extends State<ResultsPage> {
                           .textTheme
                           .headline6
                           .color
-                          .withOpacity(0.9),
+                          .withOpacity(0.5),
                       fontSize: 18,
                     ),
                   ),
@@ -176,7 +176,8 @@ class _ResultsPageState extends State<ResultsPage> {
           children: <Widget>[
             item(_inputModel.input.elementAt(0), null),
             SizedBox(height: 10),
-            item(_inputModel.input.elementAt(2), " in"),
+            item(_inputModel.input.elementAt(2),
+                _inputModel.input.elementAt(4) == "Imperial" ? " in" : " cm"),
           ],
         ),
         Column(
@@ -192,7 +193,8 @@ class _ResultsPageState extends State<ResultsPage> {
                     ],
                   ),
             SizedBox(height: 10),
-            item(_inputModel.input.elementAt(3), " lbs"),
+            item(_inputModel.input.elementAt(3),
+                _inputModel.input.elementAt(4) == "Imperial" ? " lbs" : " kg"),
           ],
         )
       ],
