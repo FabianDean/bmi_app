@@ -5,6 +5,9 @@ import '../widgets/Chart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart' as http;
+import 'package:pdf/pdf.dart';
+import 'package:printing/printing.dart';
 import '../utils/globals.dart' as Globals;
 import '../utils/Result.dart' as Res;
 
@@ -196,6 +199,20 @@ class _ResultsPageState extends State<ResultsPage> {
     );
   }
 
+  void _printChart() async {
+    String system =
+        _inputModel.input.elementAt(4) == "Imperial" ? "english" : "metric";
+    String gender = _inputModel.input.elementAt(0) == "Male" ? "m" : "f";
+    String age = _inputModel.input.elementAt(1);
+    String height = _inputModel.input.elementAt(2);
+    String weight = _inputModel.input.elementAt(3);
+    http.Response response = await http.get(
+      'https://easybmi-chart.herokuapp.com/bmichart?system=$system&gender=$gender&age=$age&height=$height&weight=$weight',
+    );
+    var pdfData = response.bodyBytes;
+    await Printing.layoutPdf(onLayout: (PdfPageFormat format) async => pdfData);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -205,6 +222,14 @@ class _ResultsPageState extends State<ResultsPage> {
           "Results",
           style: GoogleFonts.montserrat(),
         ),
+        actions: _inputModel.input.elementAt(1) == "null"
+            ? null
+            : <Widget>[
+                MaterialButton(
+                  child: Icon(Icons.print, color: Colors.white),
+                  onPressed: _printChart,
+                ),
+              ],
       ),
       body: SafeArea(
         child: LayoutBuilder(
