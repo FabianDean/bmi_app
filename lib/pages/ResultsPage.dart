@@ -110,7 +110,7 @@ class _ResultsPageState extends State<ResultsPage> {
                     ),
                   ),
                   SizedBox(height: 20),
-                  Chart(input: null),
+                  Chart(category: _result.category),
                   SizedBox(height: 10),
                   Divider(indent: 20, endIndent: 20),
                   _inputSection(),
@@ -126,8 +126,17 @@ class _ResultsPageState extends State<ResultsPage> {
                     textScaleFactor: 1.2,
                   ),
                   SizedBox(height: 20),
-                  SectionTitle("Breakdown"),
-                  Text(_result.zPercentile.toString())
+                  SectionTitle("More Information"),
+                  Row(
+                    children: <Widget>[
+                      Text("More information can be found "),
+                      MaterialButton(
+                        child: Text("here"),
+                        padding: EdgeInsets.all(0),
+                        onPressed: () {},
+                      )
+                    ],
+                  )
                 ],
               )
             : Text(
