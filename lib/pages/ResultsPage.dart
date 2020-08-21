@@ -1,13 +1,15 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
+import 'package:provider/provider.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:http/http.dart' as http;
+import 'package:pdf/pdf.dart';
+import 'package:printing/printing.dart';
 import 'package:easy_bmi/models/UserInputModel.dart';
 import 'package:easy_bmi/utils/Result.dart';
 import 'package:easy_bmi/widgets/SectionTitle.dart';
 import '../widgets/Chart.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:http/http.dart' as http;
-import 'package:pdf/pdf.dart';
-import 'package:printing/printing.dart';
 import '../utils/globals.dart' as Globals;
 import '../utils/Result.dart' as Res;
 
@@ -127,16 +129,36 @@ class _ResultsPageState extends State<ResultsPage> {
                   ),
                   SizedBox(height: 20),
                   SectionTitle("More Information"),
-                  Row(
-                    children: <Widget>[
-                      Text("More information can be found "),
-                      MaterialButton(
-                        child: Text("here"),
-                        padding: EdgeInsets.all(0),
-                        onPressed: () {},
-                      )
-                    ],
-                  )
+                  SizedBox(height: 10),
+                  RichText(
+                    textScaleFactor: 1.2,
+                    text: TextSpan(
+                      text: "Details about BMI can be found ",
+                      style: TextStyle(
+                        color: Theme.of(context).textTheme.caption.color,
+                      ),
+                      children: <TextSpan>[
+                        TextSpan(
+                            text: "here",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Theme.of(context).accentColor,
+                            ),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () async {
+                                if (_inputModel.input.elementAt(1) == "null") {
+                                  await _launchInBrowser(
+                                      "https://www.cdc.gov/healthyweight/assessing/bmi/adult_bmi/index.html");
+                                } else {
+                                  await _launchInBrowser(
+                                      "https://www.cdc.gov/healthyweight/assessing/bmi/childrens_bmi/about_childrens_bmi.html");
+                                }
+                              }),
+                        TextSpan(text: "."),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 10),
                 ],
               )
             : Text(
@@ -145,6 +167,19 @@ class _ResultsPageState extends State<ResultsPage> {
               );
       },
     );
+  }
+
+  Future<void> _launchInBrowser(String url) async {
+    if (await canLaunch(url)) {
+      await launch(
+        url,
+        forceSafariVC: false,
+        forceWebView: false,
+        headers: <String, String>{'my_header_key': 'my_header_value'},
+      );
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 
   /* Holds information used for calculation (gender, age, height, weight) */

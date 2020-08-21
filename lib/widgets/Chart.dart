@@ -34,6 +34,14 @@ class _ChartState extends State<Chart> {
         ),
         child: SvgPicture.asset(
           imagePath,
+          placeholderBuilder: (context) {
+            return Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+              ),
+            );
+          },
         ),
       ),
     );
