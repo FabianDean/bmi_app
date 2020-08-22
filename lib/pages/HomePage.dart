@@ -1,9 +1,9 @@
-import 'package:easy_bmi/models/UserInputModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:easy_bmi/models/UserInputModel.dart';
 import 'package:easy_bmi/models/SystemModel.dart';
 import '../widgets/SectionTitle.dart';
 import '../utils/globals.dart' as Globals;
@@ -42,12 +42,10 @@ class _HomePageState extends State<HomePage>
   }
 
   Future<void> _getPrefs() async {
-    print("LOG: getting data");
     _prefs = await SharedPreferences.getInstance();
   }
 
   Future<void> _saveData() async {
-    print("LOG: saved data");
     final systemModel = Provider.of<SystemModel>(context, listen: false);
     final keys = _prefs.getKeys();
 

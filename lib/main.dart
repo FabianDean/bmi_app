@@ -1,5 +1,3 @@
-import 'package:easy_bmi/models/UserInputModel.dart';
-import 'package:easy_bmi/pages/ResultsPage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,6 +7,10 @@ import './pages/HomePage.dart';
 import './pages/SettingsPage.dart';
 import './pages/HistoryPage.dart';
 import './models/SystemModel.dart';
+import 'package:easy_bmi/models/UserInputModel.dart';
+import 'package:easy_bmi/pages/ResultsPage.dart';
+import './pages/DisclaimerPage.dart';
+import './pages/BugReportPage.dart';
 import './utils/globals.dart' as Globals;
 
 void main() {
@@ -78,6 +80,8 @@ class MyApp extends StatelessWidget {
           "/results": (_) => ResultsPage(),
           "/settings": (_) => SettingsPage(),
           "/history": (_) => HistoryPage(),
+          "/disclaimer": (_) => DisclaimerPage(),
+          "/bug_report": (_) => BugReportPage(),
         },
       ),
     );

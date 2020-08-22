@@ -112,6 +112,66 @@ class _SettingsPageState extends State<SettingsPage>
               Navigator.of(context).pushNamed("/history");
             },
           ),
+          SizedBox(
+            height: 10,
+          ),
+          MaterialButton(
+            child: Container(
+              alignment: Alignment.centerLeft,
+              height: 50,
+              constraints: BoxConstraints(
+                minWidth: MediaQuery.of(context).size.width,
+              ),
+              child: Row(
+                children: <Widget>[
+                  Icon(
+                    Icons.info_outline,
+                    color: Theme.of(context).iconTheme.color,
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    "Disclaimer",
+                    textScaleFactor: 1.3,
+                  ),
+                ],
+              ),
+            ),
+            onPressed: () {
+              Navigator.of(context).pushNamed("/disclaimer");
+            },
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          MaterialButton(
+            child: Container(
+              alignment: Alignment.centerLeft,
+              height: 50,
+              constraints: BoxConstraints(
+                minWidth: MediaQuery.of(context).size.width,
+              ),
+              child: Row(
+                children: <Widget>[
+                  Icon(
+                    Icons.bug_report,
+                    color: Theme.of(context).iconTheme.color,
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    "Report bug",
+                    textScaleFactor: 1.3,
+                  ),
+                ],
+              ),
+            ),
+            onPressed: () {
+              Navigator.of(context).pushNamed("/bug_report");
+            },
+          ),
         ],
       ),
     );
