@@ -162,7 +162,7 @@ class _SettingsPageState extends State<SettingsPage>
                     width: 10,
                   ),
                   Text(
-                    "Report bug",
+                    "Report a bug",
                     textScaleFactor: 1.3,
                   ),
                 ],

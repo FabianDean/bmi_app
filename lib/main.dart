@@ -39,49 +39,57 @@ class MyApp extends StatelessWidget {
           create: (context) => UserInputModel(),
         ),
       ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: Globals.appName,
-        theme: ThemeData(
-          brightness: Brightness.light,
-          primaryColor: Globals.mainColor,
-          accentColor: Globals.mainColor.withOpacity(0.9),
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-          textTheme: GoogleFonts.montserratTextTheme(textTheme).copyWith(
-            headline5: TextStyle(color: Colors.black),
-            headline6: TextStyle(color: Colors.black87),
-            caption: TextStyle(color: Colors.grey[600]),
+      child: GestureDetector(
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: Globals.appName,
+          theme: ThemeData(
+            brightness: Brightness.light,
+            primaryColor: Globals.mainColor,
+            accentColor: Globals.mainColor.withOpacity(0.9),
+            visualDensity: VisualDensity.adaptivePlatformDensity,
+            textTheme: GoogleFonts.montserratTextTheme(textTheme).copyWith(
+              headline5: TextStyle(color: Colors.black),
+              headline6: TextStyle(color: Colors.black87),
+              caption: TextStyle(color: Colors.grey[600]),
+            ),
+            dividerColor: Colors.grey[250],
+            bottomAppBarColor: Colors.white,
+            iconTheme: IconThemeData(
+              color: Colors.black87,
+            ),
           ),
-          dividerColor: Colors.grey[250],
-          bottomAppBarColor: Colors.white,
-          iconTheme: IconThemeData(
-            color: Colors.black87,
+          darkTheme: ThemeData(
+            brightness: Brightness.dark,
+            accentColor: Globals.mainColorDark,
+            textTheme: GoogleFonts.montserratTextTheme(textTheme).copyWith(
+              headline5: TextStyle(color: Colors.white),
+              headline6: TextStyle(color: Colors.grey[200]),
+              caption: TextStyle(color: Colors.grey[400]),
+            ),
+            dividerColor: Colors.grey[600],
+            bottomAppBarColor: Colors.black,
+            iconTheme: IconThemeData(
+              color: Colors.grey,
+            ),
+            textSelectionColor: Colors.grey[200],
+            textSelectionHandleColor: Colors.grey[200],
           ),
+          home: MainPage(),
+          routes: {
+            "/home": (_) => HomePage(),
+            "/results": (_) => ResultsPage(),
+            "/settings": (_) => SettingsPage(),
+            "/history": (_) => HistoryPage(),
+            "/disclaimer": (_) => DisclaimerPage(),
+            "/bug_report": (_) => BugReportPage(),
+          },
         ),
-        darkTheme: ThemeData(
-          brightness: Brightness.dark,
-          accentColor: Globals.mainColorDark,
-          textTheme: GoogleFonts.montserratTextTheme(textTheme).copyWith(
-            headline5: TextStyle(color: Colors.white),
-            headline6: TextStyle(color: Colors.grey[200]),
-            caption: TextStyle(color: Colors.grey[400]),
-          ),
-          dividerColor: Colors.grey[600],
-          bottomAppBarColor: Colors.black,
-          iconTheme: IconThemeData(
-            color: Colors.grey,
-          ),
-          textSelectionColor: Colors.grey[200],
-          textSelectionHandleColor: Colors.grey[200],
-        ),
-        home: MainPage(),
-        routes: {
-          "/home": (_) => HomePage(),
-          "/results": (_) => ResultsPage(),
-          "/settings": (_) => SettingsPage(),
-          "/history": (_) => HistoryPage(),
-          "/disclaimer": (_) => DisclaimerPage(),
-          "/bug_report": (_) => BugReportPage(),
+        onTap: () {
+          FocusScopeNode currentFocus = FocusScope.of(context);
+          if (!currentFocus.hasPrimaryFocus) {
+            currentFocus.unfocus();
+          }
         },
       ),
     );
