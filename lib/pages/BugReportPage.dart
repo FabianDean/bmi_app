@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import '../widgets/SectionTitle.dart';
 import '../utils/globals.dart' as Globals;
@@ -43,12 +42,6 @@ class _BugReportPageState extends State<BugReportPage> {
     //     content: Text(platformResponse),
     //   ),
     // );
-  }
-
-  bool _validateEmail(String email) {
-    RegExp regExp = RegExp(
-        r"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?");
-    return regExp.hasMatch(email);
   }
 
   @override

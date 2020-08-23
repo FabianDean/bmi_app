@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
+import 'package:connectivity/connectivity.dart';
 import 'package:pdf/pdf.dart';
 import 'package:printing/printing.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
@@ -20,6 +21,7 @@ class ResultsPage extends StatefulWidget {
 }
 
 class _ResultsPageState extends State<ResultsPage> {
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   Result _result;
   UserInputModel _inputModel;
   // manage state of modal progress HUD widget
@@ -248,11 +250,17 @@ class _ResultsPageState extends State<ResultsPage> {
     }
   }
 
-  void _printChart() async {
-    // start the modal progress HUD
-    setState(() {
-      _isInAsyncCall = true;
-    });
+  Future<bool> _checkInternet() async {
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.mobile ||
+        connectivityResult == ConnectivityResult.wifi) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future<void> _printChart() async {
     String system =
         _inputModel.input.elementAt(4) == "Imperial" ? "english" : "metric";
     String gender = _inputModel.input.elementAt(0) == "Male" ? "m" : "f";
@@ -264,15 +272,12 @@ class _ResultsPageState extends State<ResultsPage> {
     );
     var pdfData = response.bodyBytes;
     await Printing.layoutPdf(onLayout: (PdfPageFormat format) async => pdfData);
-    // start the modal progress HUD
-    setState(() {
-      _isInAsyncCall = false;
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         backgroundColor: Globals.mainColor,
         title: Text(
@@ -283,20 +288,40 @@ class _ResultsPageState extends State<ResultsPage> {
             ? null
             : <Widget>[
                 MaterialButton(
-                  child: Row(
-                    children: <Widget>[
-                      Icon(Icons.print, color: Colors.white),
-                      SizedBox(width: 5),
-                      Text(
-                        "Growth Chart",
-                        style: TextStyle(
-                          color: Colors.white,
+                    child: Row(
+                      children: <Widget>[
+                        Icon(Icons.print, color: Colors.white),
+                        SizedBox(width: 5),
+                        Text(
+                          "Growth Chart",
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  onPressed: _printChart,
-                ),
+                      ],
+                    ),
+                    onPressed: () async {
+                      // start the modal progress HUD
+                      setState(() {
+                        _isInAsyncCall = true;
+                      });
+                      bool hasInternet = await _checkInternet();
+                      if (hasInternet) {
+                        await _printChart();
+                      } else {
+                        _scaffoldKey.currentState.showSnackBar(SnackBar(
+                          backgroundColor: Colors.red,
+                          content: Text(
+                            "An internet connection is required for this feature.",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ));
+                      }
+                      // end the modal progress HUD
+                      setState(() {
+                        _isInAsyncCall = false;
+                      });
+                    }),
               ],
       ),
       body: ModalProgressHUD(

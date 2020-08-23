@@ -69,8 +69,12 @@ class _HistoryPageState extends State<HistoryPage> {
       ),
       body: SafeArea(
         child: _keys != null && _keys.length > 0
-            ? ListView.builder(
+            ? ListView.separated(
                 itemCount: _keys.length,
+                separatorBuilder: (context, index) => Divider(
+                  indent: MediaQuery.of(context).size.width * 0.1,
+                  color: Theme.of(context).textTheme.caption.color,
+                ),
                 itemBuilder: (context, index) {
                   return MaterialButton(
                     padding: EdgeInsets.all(0),

@@ -409,6 +409,7 @@ class _HomePageState extends State<HomePage>
                                   fontSize: 22,
                                   color: Globals.mainColor,
                                 ),
+                                cursorColor: Globals.mainColor,
                                 decoration: InputDecoration(
                                   hintText: "Enter weight",
                                   hintStyle: TextStyle(
