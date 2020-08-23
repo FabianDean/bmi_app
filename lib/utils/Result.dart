@@ -45,7 +45,7 @@ Result getResult(
     "healthy":
         "This result is within a healthy weight range. Proper diet and exercise is still encouraged to promote good health.",
     "overweight":
-        "This result is considered overweight. Although not considered obese, improved diet and exercise is encouraged to promote good health.",
+        "This result is considered overweight. Although not obese, improved diet and exercise is encouraged to promote good health.",
     "obese":
         "This result is considered obese and points to possible weight-related health problems. Further assessment by a healthcare provider is suggested to determine possible causes."
   };

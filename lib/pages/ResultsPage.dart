@@ -6,6 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
 import 'package:pdf/pdf.dart';
 import 'package:printing/printing.dart';
+import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:easy_bmi/models/UserInputModel.dart';
 import 'package:easy_bmi/utils/Result.dart';
 import 'package:easy_bmi/widgets/SectionTitle.dart';
@@ -21,6 +22,8 @@ class ResultsPage extends StatefulWidget {
 class _ResultsPageState extends State<ResultsPage> {
   Result _result;
   UserInputModel _inputModel;
+  // manage state of modal progress HUD widget
+  bool _isInAsyncCall = false;
 
   @override
   void initState() {
@@ -169,19 +172,6 @@ class _ResultsPageState extends State<ResultsPage> {
     );
   }
 
-  Future<void> _launchInBrowser(String url) async {
-    if (await canLaunch(url)) {
-      await launch(
-        url,
-        forceSafariVC: false,
-        forceWebView: false,
-        headers: <String, String>{'my_header_key': 'my_header_value'},
-      );
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
-
   /* Holds information used for calculation (gender, age, height, weight) */
   Widget _inputSection() {
     /* Quick helper widget to avoid code duplication in input section */
@@ -245,7 +235,24 @@ class _ResultsPageState extends State<ResultsPage> {
     );
   }
 
+  Future<void> _launchInBrowser(String url) async {
+    if (await canLaunch(url)) {
+      await launch(
+        url,
+        forceSafariVC: false,
+        forceWebView: false,
+        headers: <String, String>{'my_header_key': 'my_header_value'},
+      );
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
   void _printChart() async {
+    // start the modal progress HUD
+    setState(() {
+      _isInAsyncCall = true;
+    });
     String system =
         _inputModel.input.elementAt(4) == "Imperial" ? "english" : "metric";
     String gender = _inputModel.input.elementAt(0) == "Male" ? "m" : "f";
@@ -257,6 +264,10 @@ class _ResultsPageState extends State<ResultsPage> {
     );
     var pdfData = response.bodyBytes;
     await Printing.layoutPdf(onLayout: (PdfPageFormat format) async => pdfData);
+    // start the modal progress HUD
+    setState(() {
+      _isInAsyncCall = false;
+    });
   }
 
   @override
@@ -272,33 +283,49 @@ class _ResultsPageState extends State<ResultsPage> {
             ? null
             : <Widget>[
                 MaterialButton(
-                  child: Icon(Icons.print, color: Colors.white),
+                  child: Row(
+                    children: <Widget>[
+                      Icon(Icons.print, color: Colors.white),
+                      SizedBox(width: 5),
+                      Text(
+                        "Growth Chart",
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
                   onPressed: _printChart,
                 ),
               ],
       ),
-      body: SafeArea(
-        child: LayoutBuilder(
-          builder: (context, constraint) {
-            return SingleChildScrollView(
-              padding: EdgeInsets.only(
-                left: 20,
-                right: 20,
-              ),
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  minWidth: constraint.maxWidth,
-                  minHeight: constraint.maxHeight,
+      body: ModalProgressHUD(
+        child: SafeArea(
+          child: LayoutBuilder(
+            builder: (context, constraint) {
+              return SingleChildScrollView(
+                padding: EdgeInsets.only(
+                  left: 20,
+                  right: 20,
                 ),
-                child: IntrinsicHeight(
-                  child: _result != null
-                      ? _resultsSection(context)
-                      : CircularProgressIndicator(),
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minWidth: constraint.maxWidth,
+                    minHeight: constraint.maxHeight,
+                  ),
+                  child: IntrinsicHeight(
+                    child: _result != null
+                        ? _resultsSection(context)
+                        : CircularProgressIndicator(),
+                  ),
                 ),
-              ),
-            );
-          },
+              );
+            },
+          ),
         ),
+        inAsyncCall: _isInAsyncCall,
+        opacity: 0.4,
+        progressIndicator: CircularProgressIndicator(),
       ),
     );
   }

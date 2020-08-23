@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
 import '../widgets/SectionTitle.dart';
 import '../utils/globals.dart' as Globals;
 
@@ -10,22 +11,38 @@ class BugReportPage extends StatefulWidget {
 }
 
 class _BugReportPageState extends State<BugReportPage> {
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
+  TextEditingController _messageController = TextEditingController();
 
   final String disclaimerText =
       "This mobile app is intended for informational, educational, and research purposes only. It is not, and is not intended, for use in the diagnosis of disease or other conditions, or in the cure, mitigation, treatment, or prevention of disease. Health care providers should exercise their own independent clinical judgement when using the mobile app in conjunction with patient care.";
 
-  Future<void> _launchInBrowser(String url) async {
-    if (await canLaunch(url)) {
-      await launch(
-        url,
-        forceSafariVC: false,
-        forceWebView: false,
-        headers: <String, String>{'my_header_key': 'my_header_value'},
-      );
-    } else {
-      throw 'Could not launch $url';
+  Future<void> send() async {
+    final Email email = Email(
+      body: _messageController.text,
+      subject: "Easy BMI Bug Report",
+      recipients: ["fabian@fabiandean.dev"],
+      isHTML: false,
+    );
+
+    String platformResponse;
+
+    try {
+      await FlutterEmailSender.send(email);
+      platformResponse = 'Bug report submitted.';
+    } catch (error) {
+      platformResponse = error.toString();
     }
+
+    if (!mounted) return;
+
+    // leave out for now
+    // _scaffoldKey.currentState.showSnackBar(
+    //   SnackBar(
+    //     content: Text(platformResponse),
+    //   ),
+    // );
   }
 
   bool _validateEmail(String email) {
@@ -38,6 +55,7 @@ class _BugReportPageState extends State<BugReportPage> {
   Widget build(BuildContext context) {
     return GestureDetector(
       child: Scaffold(
+        key: _scaffoldKey,
         appBar: AppBar(
           backgroundColor: Globals.mainColor,
           title: Text(
@@ -60,32 +78,10 @@ class _BugReportPageState extends State<BugReportPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    SectionTitle("Email"),
-                    SizedBox(height: 5),
-                    TextFormField(
-                      style: TextStyle(
-                        color: Theme.of(context).textTheme.caption.color,
-                      ),
-                      decoration: InputDecoration(
-                        hintText: "Your email",
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Colors.white,
-                            width: 2,
-                          ),
-                        ),
-                      ),
-                      validator: (value) {
-                        if (value.isEmpty || !(_validateEmail(value))) {
-                          return 'Please enter a valid email';
-                        }
-                        return null;
-                      },
-                    ),
-                    SizedBox(height: 20),
                     SectionTitle("Message"),
                     SizedBox(height: 5),
                     TextFormField(
+                      controller: _messageController,
                       maxLines: 6,
                       style: TextStyle(
                         color: Theme.of(context).textTheme.caption.color,
@@ -99,6 +95,7 @@ class _BugReportPageState extends State<BugReportPage> {
                           ),
                         ),
                       ),
+                      cursorColor: Globals.mainColor,
                       validator: (value) {
                         if (value.isEmpty) {
                           return 'Please enter some text';
@@ -110,15 +107,11 @@ class _BugReportPageState extends State<BugReportPage> {
                     RaisedButton(
                       color: Globals.mainColor,
                       textColor: Colors.white,
-                      onPressed: () {
+                      onPressed: () async {
                         // Validate returns true if the form is valid, otherwise false.
                         if (_formKey.currentState.validate()) {
-                          // If the form is valid, display a snackbar
-                          // TODO: handle report
-
-                          Scaffold.of(context).showSnackBar(SnackBar(
-                              content:
-                                  Text('Bug report submitted. Thank you!')));
+                          // If the form is valid, begin submission
+                          await send();
                         }
                       },
                       child: Text('Submit'),
